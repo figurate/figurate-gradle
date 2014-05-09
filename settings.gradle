@@ -1,2 +1,3 @@
 include 'gradle-keytool-plugin'
 include 'gradle-curl-plugin'
+include 'gradle-figurate-plugin'

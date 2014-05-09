@@ -1,0 +1,10 @@
+osgi = { binding ->
+    config {
+        $configProps
+    }
+    bundles {
+        ${bundles}.each { bundle ->
+            start bundle
+        }
+    }
+}
