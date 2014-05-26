@@ -18,7 +18,7 @@ class FiguratePluginSpec extends Specification {
 
     def 'verify plugin is applied'() {
         expect:
-        project.configurations.bundles
+        project.configurations.bundle
     }
 
     def 'verify copy bundles task'() {
@@ -37,7 +37,7 @@ class FiguratePluginSpec extends Specification {
         new File(project.buildDir, 'bundles/slf4j-api-1.7.5.jar').exists()
     }
 
-    def 'verify launcher config task'() {
+    def 'verify default launcher config task'() {
         given:
         project.repositories {
             mavenCentral()
@@ -51,6 +51,37 @@ class FiguratePluginSpec extends Specification {
 
         then:
         new File(project.buildDir, "config/${project.name}.conf").exists()
+    }
+
+    def 'verify custom launcher config task'() {
+        given:
+        project.repositories {
+            mavenCentral()
+        }
+        project.dependencies {
+            bundle 'org.slf4j:slf4j-api:1.7.5'
+        }
+
+        and:
+        project.task('testLauncherConfig', type: LauncherConfigTask) {
+            outputDir = project.file("$project.buildDir/test-config")
+            binding['configProps'] << ['felix.systembundle.activators': '''
+[new org.osgi.framework.BundleActivator() {
+                                                    public void start(org.osgi.framework.BundleContext context) throws Exception {
+                                                        binding.serviceLocator = new org.figurate.osgi.OsgiServiceLocator(context)
+                                                        binding.bundleContext = context
+                                                    }
+
+                                                    public void stop(org.osgi.framework.BundleContext context) throws Exception {
+                                                    }
+                                                }]''']
+        }
+
+        when:
+        project.tasks.testLauncherConfig.execute()
+
+        then:
+        new File(project.buildDir, "test-config/${project.name}.conf").exists()
     }
 
     def 'verify installApp task'() {
