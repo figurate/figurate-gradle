@@ -1,10 +1,23 @@
 osgi = { binding ->
     config {
-        $configProps
+        [<% configProps.each {
+         println "'$it.key':${it.value instanceof String || it.value instanceof GString ? "'$it.value'" : it.value},"
+        }%>]
     }
     bundles {
-        ${bundles}.each { bundle ->
+        [<% bundles.reverseEach {
+         println "'$it',"
+        }%>].each { bundle ->
             start bundle
         }
+    }
+    startLevels {
+        <% if (startLevels) { %>
+        [<% startLevels.each {
+            println "($it.key): ${it.value.collect {"'$it'"}},"
+        }%>]
+        <% } else { %>
+        [:]
+        <% } %>
     }
 }
