@@ -102,4 +102,10 @@ class FiguratePluginSpec extends Specification {
         then:
         new File(project.buildDir, "install/${project.name}").exists()
     }
+
+    def 'verify constellation configurations'() {
+        expect:
+        project.configurations.getByName('constellation$logback') != null
+        project.configurations.getByName('constellation$felix') != null
+    }
 }
