@@ -1,4 +1,4 @@
-osgi = { binding ->
+{ binding ->
     config {
         [<% configProps.each {
          println "'$it.key':${it.value instanceof String || it.value instanceof GString ? "'$it.value'" : it.value},"
