@@ -16,8 +16,8 @@ class FiguratePlugin implements Plugin<Project> {
         // require the application plugin to support creation of self-contained install packages.
         project.apply plugin: 'application'
 
-        // maven central is required to retrieve plugin dependencies.
         project.repositories {
+            // maven central is required to retrieve plugin dependencies.
             mavenCentral()
         }
 
@@ -43,6 +43,7 @@ class FiguratePlugin implements Plugin<Project> {
 
             // the provided configuration is a dependency set that is not included in packaging.
             provided
+            provided.transitive = true
         }
 
         // provided dependencies should be included in the compile classpath.
@@ -55,10 +56,13 @@ class FiguratePlugin implements Plugin<Project> {
             runtime project.files('/Users/fortuna/Development/figurate-core/bootstrap/build/libs/bootstrap.jar')
             // require inclusion of (an) OSGi runtime (XXX: in future support configurable runtime)
             runtime 'org.apache.felix:org.apache.felix.framework:4.0.2'
-            // require inclusion of Groovy (XXX: not sure this should be mandatory?)
+            // require inclusion of bootstrap dependencies (XXX: this can probably be removed once bootstrap is properly published)
 //            runtime project.dependencies.localGroovy()
             runtime 'org.codehaus.groovy:groovy-all:2.3.0-rc-1',
                     'org.slf4j:slf4j-api:1.7.5'
+
+            // used for genscr task
+//            provided 'org.apache.felix:org.apache.felix.scr.ant:1.9.0'
         }
 
         // configure the default main class from the bootstrap dependency.
@@ -72,19 +76,32 @@ class FiguratePlugin implements Plugin<Project> {
         // set the default JVM arguments for the application.
         project.applicationDefaultJvmArgs = [
                 "-Xmx512m",
-                "-Dlogback.configurationFile=$LauncherConfigTask.DEFAULT_CONFIG_DIR/logback.groovy"
+                "-Dlogback.configurationFile=$LauncherConfigTask.DEFAULT_CONFIG_DIR/logback.groovy",
+                "-DconfigurationAdmin.configurationFile=$ConfigurationConfigTask.DEFAULT_CONFIG_DIR/configuration.groovy"
         ]
 
         // copy bundles required for application install.
         project.task('copyBundles', type: Copy) {
+            from "$project.buildDir/libs"
             from project.configurations.bundle
-            into "${project.buildDir}/bundles"
+
+            into "$project.buildDir/bundles"
         }
 
         // create default launcher configuration task.
         project.task('launcherConfig', type: LauncherConfigTask)
         // create default logger configuration task.
         project.task('loggerConfig', type: LoggerConfigTask)
+        // create default configuration task.
+        project.task('configurationConfig', type: ConfigurationConfigTask)
+
+        /*
+        project.task('genscr', dependsOn: project.tasks.compileJava) {
+//            println configurations.compile.asPath
+            ant.taskdef(resource: 'scrtask.properties', classpath: project.sourceSets.main.compileClasspath.asPath )
+            ant.scr(srcdir: 'build/classes/main', destdir: 'build/classes/main', scanClasses: true, classpath: project.sourceSets.main.compileClasspath.asPath)
+        }
+        */
 
         // include bundles in application distribution.
         project.applicationDistribution.from(project.tasks.copyBundles) {
@@ -98,10 +115,17 @@ class FiguratePlugin implements Plugin<Project> {
         project.applicationDistribution.from(project.tasks.loggerConfig) {
             into LoggerConfigTask.DEFAULT_CONFIG_DIR
         }
+        // include configuration config in application distribution.
+        project.applicationDistribution.from(project.tasks.configurationConfig) {
+            into ConfigurationConfigTask.DEFAULT_CONFIG_DIR
+        }
 
         // application run depends on default custom tasks.
         project.tasks.with {
-            run.dependsOn copyBundles, launcherConfig, loggerConfig
+            copyBundles.dependsOn jar
+            launcherConfig.dependsOn jar
+            run.dependsOn copyBundles, launcherConfig, loggerConfig, configurationConfig
+//            jar.dependsOn genscr
         }
     }
 }
