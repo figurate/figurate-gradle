@@ -1,0 +1,9 @@
+[
+    <% configProps.each { configuration ->
+            println "'$configuration.key': ["
+            configuration.value.each {
+                println "'$it.key':${it.value instanceof String || it.value instanceof GString ? "'$it.value'" : it.value},"
+            }
+            println '],'
+        } %>
+]
