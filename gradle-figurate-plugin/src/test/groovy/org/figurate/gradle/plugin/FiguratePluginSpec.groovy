@@ -12,7 +12,9 @@ class FiguratePluginSpec extends Specification {
     Project project
 
     def setup() {
-        project = ProjectBuilder.builder().withName('figurate-test').withProjectDir(new File('build', 'figurate-test')).build()
+        project = ProjectBuilder.builder()
+                .withName('figurate-test')
+                .withProjectDir(new File('build', 'figurate-test')).build()
         project.apply plugin: 'figurate'
     }
 
@@ -50,7 +52,8 @@ class FiguratePluginSpec extends Specification {
         project.tasks.launcherConfig.execute()
 
         then:
-        new File(project.buildDir, "config/${project.name}.conf").exists()
+        new File(project.buildDir,
+                "$LauncherConfigTask.DEFAULT_CONFIG_DIR/$project.tasks.launcherConfig.configFilename").exists()
     }
 
     def 'verify custom launcher config task'() {
@@ -81,7 +84,7 @@ class FiguratePluginSpec extends Specification {
         project.tasks.testLauncherConfig.execute()
 
         then:
-        new File(project.buildDir, "test-config/${project.name}.conf").exists()
+        new File(project.buildDir, "test-config/$project.tasks.launcherConfig.configFilename").exists()
     }
 
     def 'verify installApp task'() {

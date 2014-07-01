@@ -65,21 +65,6 @@ class FiguratePlugin implements Plugin<Project> {
 //            provided 'org.apache.felix:org.apache.felix.scr.ant:1.9.0'
         }
 
-        // configure the default main class from the bootstrap dependency.
-        project.mainClassName = 'org.figurate.FrameworkLauncher'
-        project.tasks.run.with {
-            // provide default arguments for the application run task.
-            args "$LauncherConfigTask.DEFAULT_CONFIG_DIR/${project.name}$LauncherConfigTask.DEFAULT_CONFIG_EXT"
-            // set the working directory for the application run task.
-            workingDir 'build'
-        }
-        // set the default JVM arguments for the application.
-        project.applicationDefaultJvmArgs = [
-                "-Xmx512m",
-                "-Dlogback.configurationFile=$LauncherConfigTask.DEFAULT_CONFIG_DIR/logback.groovy",
-                "-DconfigurationAdmin.configurationFile=$ConfigurationConfigTask.DEFAULT_CONFIG_DIR/configuration.groovy"
-        ]
-
         // copy bundles required for application install.
         project.task('copyBundles', type: Copy) {
             from "$project.buildDir/libs"
@@ -127,5 +112,20 @@ class FiguratePlugin implements Plugin<Project> {
             run.dependsOn copyBundles, launcherConfig, loggerConfig, configurationConfig
 //            jar.dependsOn genscr
         }
+
+        // configure the default main class from the bootstrap dependency.
+        project.mainClassName = 'org.figurate.FrameworkLauncher'
+        project.tasks.run.with {
+            // provide default arguments for the application run task.
+            args "$LauncherConfigTask.DEFAULT_CONFIG_DIR/$project.tasks.launcherConfig.configFilename"
+            // set the working directory for the application run task.
+            workingDir 'build'
+        }
+        // set the default JVM arguments for the application.
+        project.applicationDefaultJvmArgs = [
+                "-Xmx512m",
+                "-Dlogback.configurationFile=$LauncherConfigTask.DEFAULT_CONFIG_DIR/$project.tasks.loggerConfig.configFilename",
+                "-DconfigurationAdmin.configurationFile=$ConfigurationConfigTask.DEFAULT_CONFIG_DIR/$project.tasks.configurationConfig.configFilename"
+        ]
     }
 }

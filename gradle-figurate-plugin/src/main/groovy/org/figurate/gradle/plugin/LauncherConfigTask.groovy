@@ -8,9 +8,7 @@ import groovy.text.Template
  */
 class LauncherConfigTask extends AbstractConfigTask {
 
-    static final String DEFAULT_CONFIG_EXT = '.groovy'
-
-    URL configTemplate = getClass().getResource('/config/figurate.config.template')
+    URL configTemplate = getClass().getResource('/config/launcher.groovy.template')
 
     def binding = [
         configProps: [
@@ -31,15 +29,22 @@ class LauncherConfigTask extends AbstractConfigTask {
     @Override
     Map getBinding() {
         def resolvedBinding = new HashMap(binding)
-        resolvedBinding.bundles = project.configurations.hasProperty('bundle') ?
-                project.configurations.bundle.collect { "$bundleDir/${it.name}" } : []
+        resolvedBinding.bundles = new File(project.buildDir, 'libs').listFiles().collect {"$bundleDir/$it.name" }
+        if (project.configurations.hasProperty('bundle')) {
+            resolvedBinding.bundles.addAll project.configurations.bundle.collect { "$bundleDir/$it.name" }
+        }
         resolvedBinding
     }
 
     @Override
     String getConfigFilename() {
-        "${project.name}$DEFAULT_CONFIG_EXT"
+        'launcher.groovy'
     }
+
+    /*
+     * Missing properties delegated to binding. Not using @Delegate here as
+     * we only want to delegate the get/set of properties.
+     */
 
     def propertyMissing(String name, value) { binding[name] = value }
 

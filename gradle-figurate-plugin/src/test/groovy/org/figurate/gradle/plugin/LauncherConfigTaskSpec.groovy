@@ -22,7 +22,7 @@ class LauncherConfigTaskSpec extends Specification {
         project.tasks.launcher.execute()
 
         then:
-        def configFile = new File(project.buildDir, "test-config/${project.name}.conf")
+        def configFile = new File(project.buildDir, "test-config/$project.tasks.launcher.configFilename")
         configFile.exists()
 
         and:
@@ -37,6 +37,11 @@ class LauncherConfigTaskSpec extends Specification {
         [].each { bundle ->
             start bundle
         }
+    }
+    startLevels {
+
+        [:]
+
     }
 }
 '''

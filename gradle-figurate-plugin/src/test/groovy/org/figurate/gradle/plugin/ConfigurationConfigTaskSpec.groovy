@@ -30,11 +30,16 @@ class ConfigurationConfigTaskSpec extends Specification {
         project.tasks.configuration.execute()
 
         then:
-        def configFile = new File(project.buildDir, "test-config/configuration.groovy")
+        def configFile = new File(project.buildDir, "test-config/$project.tasks.configuration.configFilename")
         configFile.exists()
 
         and:
         configFile.text == '''[
+    'com.example.bundle.1': [
+'testProp':1,
+'testString':'string',
+],
+
 ]
 '''
     }
