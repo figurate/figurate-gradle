@@ -10,7 +10,10 @@ class ConfigurationConfigTask extends AbstractConfigTask {
 
     URL configTemplate = getClass().getResource('/config/configuration.groovy.template')
 
-    def binding = [configProps:[]]
+    def binding = [
+            configProps:[],
+            factoryConfigProps: []
+    ]
 
     @Override
     Template getTemplate() {
