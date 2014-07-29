@@ -1,4 +1,4 @@
-package org.figurate.gradle.plugin
+package org.figurate.gradle.plugin.constellations
 
 import spock.lang.Shared
 import spock.lang.Specification
