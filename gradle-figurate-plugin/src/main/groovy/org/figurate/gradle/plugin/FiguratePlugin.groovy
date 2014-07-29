@@ -21,20 +21,6 @@ class FiguratePlugin implements Plugin<Project> {
             mavenCentral()
         }
 
-        // parse a list of constellation configurations that provide an alias for a group of bundles.
-        def constellations = new GroovyShell(getClass().classLoader).evaluate(
-                getClass().getResourceAsStream('/constellations.groovy').newReader())
-
-        // create a (non-transitive) configuration for each constellation.
-        constellations.keySet().each { key ->
-            def configuration = project.configurations.create("constellation\$$key")
-            configuration.transitive = false
-            // add constellation bundles to configuration dependency set
-            constellations[key].each {
-                project.dependencies.add(configuration.name, it)
-            }
-        }
-
         // add custom configurations.
         project.configurations {
             // the bundle configuration is a non-transitive dependency set.
@@ -107,8 +93,7 @@ class FiguratePlugin implements Plugin<Project> {
 
         // application run depends on default custom tasks.
         project.tasks.with {
-            copyBundles.dependsOn jar
-            launcherConfig.dependsOn jar
+            copyBundles.mustRunAfter jar
             run.dependsOn copyBundles, launcherConfig, loggerConfig, configurationConfig
 //            jar.dependsOn genscr
         }
