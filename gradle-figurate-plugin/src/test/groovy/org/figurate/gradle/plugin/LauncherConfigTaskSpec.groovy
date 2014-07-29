@@ -26,7 +26,7 @@ class LauncherConfigTaskSpec extends Specification {
         configFile.exists()
 
         and:
-        configFile.text == '''osgi = { binding ->
+        configFile.text == '''{ binding ->
     config {
         ['org.osgi.framework.executionenvironment':'J2SE-1.7,J2SE-1.6,J2SE-1.5,J2SE-1.4,J2SE-1.3,JavaSE-1.6',
 'org.osgi.framework.storage':'bundle-cache',
@@ -39,9 +39,7 @@ class LauncherConfigTaskSpec extends Specification {
         }
     }
     startLevels {
-
         [:]
-
     }
 }
 '''

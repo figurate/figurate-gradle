@@ -16,8 +16,6 @@
         [<% startLevels.each {
             println "($it.key): ${it.value.collect {"'$it'"}},"
         }%>]
-        <% } else { %>
-        [:]
-        <% } %>
+        <% } else { %>[:]<% } %>
     }
 }
