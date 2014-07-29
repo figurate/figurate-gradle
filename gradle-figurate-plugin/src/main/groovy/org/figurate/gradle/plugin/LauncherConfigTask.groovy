@@ -29,7 +29,7 @@ class LauncherConfigTask extends AbstractConfigTask {
     @Override
     Map getBinding() {
         def resolvedBinding = new HashMap(binding)
-        resolvedBinding.bundles = new File(project.buildDir, 'libs').listFiles().collect {"$bundleDir/$it.name" }
+        resolvedBinding.bundles = new File(project.buildDir, 'libs').listFiles({it.name.endsWith 'jar'} as FileFilter).collect {"$bundleDir/$it.name" }
         if (project.configurations.hasProperty('bundle')) {
             resolvedBinding.bundles.addAll project.configurations.bundle.collect { "$bundleDir/$it.name" }
         }
