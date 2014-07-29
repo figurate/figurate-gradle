@@ -35,11 +35,13 @@ class ConfigurationConfigTaskSpec extends Specification {
 
         and:
         configFile.text == '''[
-    'com.example.bundle.1': [
+    configProps: ['com.example.bundle.1': [
 'testProp':1,
 'testString':'string',
 ],
+],
 
+    factoryConfigProps: [],
 ]
 '''
     }
