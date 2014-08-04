@@ -19,14 +19,21 @@ class ConstellationsPlugin implements Plugin<Project> {
 
         // create a (non-transitive) configuration for each constellation.
         constellations.keySet().each { key ->
-            log.info "Adding configuration [$key]"
+            addConfiguration(project, key, constellations[key])
+        }
+    }
 
-            def configuration = project.configurations.create("constellation\$$key")
-            configuration.transitive = false
-            // add constellation bundles to configuration dependency set
-            constellations[key].each {
-                project.dependencies.add(configuration.name, it)
-            }
+    void addConfiguration(Project project, String key, String resource) {
+        def constellation = new GroovyShell(getClass().classLoader).evaluate(
+                getClass().getResourceAsStream("/configurations/${resource}.groovy").newReader())
+
+        log.info "Adding configuration [$key]"
+
+        def configuration = project.configurations.create("constellation\$$key")
+        configuration.transitive = false
+        // add constellation bundles to configuration dependency set
+        constellation.each {
+            project.dependencies.add(configuration.name, it)
         }
     }
 }
