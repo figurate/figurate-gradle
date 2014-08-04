@@ -17,6 +17,8 @@ class FiguratePlugin implements Plugin<Project> {
         project.apply plugin: 'application'
 
         project.repositories {
+            // XXX: temporary..
+            mavenLocal()
             // maven central is required to retrieve plugin dependencies.
             mavenCentral()
         }
@@ -38,8 +40,7 @@ class FiguratePlugin implements Plugin<Project> {
         // add default project dependencies.
         project.dependencies {
             // require inclusion of the figurate bootstrap dependency.
-//            runtime 'org.figurate:figurate-bootstrap:1.0'
-            runtime project.files('/Users/fortuna/Development/figurate-core/bootstrap/build/libs/bootstrap.jar')
+            runtime 'org.figurate:bootstrap:master-SNAPSHOT'
             // require inclusion of (an) OSGi runtime (XXX: in future support configurable runtime)
             runtime 'org.apache.felix:org.apache.felix.framework:4.0.2'
             // require inclusion of bootstrap dependencies (XXX: this can probably be removed once bootstrap is properly published)
