@@ -43,10 +43,6 @@ class FiguratePlugin implements Plugin<Project> {
             runtime 'org.figurate:bootstrap:master-SNAPSHOT'
             // require inclusion of (an) OSGi runtime (XXX: in future support configurable runtime)
             runtime 'org.apache.felix:org.apache.felix.framework:4.0.2'
-            // require inclusion of bootstrap dependencies (XXX: this can probably be removed once bootstrap is properly published)
-//            runtime project.dependencies.localGroovy()
-            runtime 'org.codehaus.groovy:groovy-all:2.3.0-rc-1',
-                    'org.slf4j:slf4j-api:1.7.5'
 
             // used for genscr task
 //            provided 'org.apache.felix:org.apache.felix.scr.ant:1.9.0'
