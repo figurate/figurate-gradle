@@ -1,5 +1,22 @@
-allprojects {
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            url 'http://maven.tmatesoft.com/content/repositories/releases/'
+        }
+    }
+
+    dependencies {
+        classpath 'au.com.ish.gradle:release:2.2.2'
+    }
+}
+
+subprojects {
+
     apply plugin: 'groovy'
+    apply plugin: 'release'
+    apply plugin: 'maven'
+    apply plugin: 'signing'
 
     repositories {
         mavenCentral()
@@ -9,5 +26,50 @@ allprojects {
         compile gradleApi()
 
         testCompile 'org.spockframework:spock-core:0.7-groovy-1.8'
+        // required for mocking non-interface classes in spock..
+        testCompile 'cglib:cglib-nodep:3.1'
     }
+
+
+    task javadocJar(type: Jar, dependsOn: javadoc) {
+        classifier = 'javadoc'
+        from 'build/docs/javadoc'
+    }
+
+    task sourcesJar(type: Jar) {
+        from sourceSets.main.allSource
+        classifier = 'sources'
+    }
+
+    artifacts {
+        archives jar
+        archives javadocJar
+        archives sourcesJar
+    }
+
+    signing {
+        sign configurations.archives
+    }
+
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                mavenLocal()
+            }
+        }
+    }
+
+    release {
+        failOnSnapshotDependencies = true
+        allowLocalModifications = false
+        releaseDryRun = false
+        scm = 'git'
+    }
+
+    group = 'org.figurate'
+    version = release.projectVersion
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.11'
 }
