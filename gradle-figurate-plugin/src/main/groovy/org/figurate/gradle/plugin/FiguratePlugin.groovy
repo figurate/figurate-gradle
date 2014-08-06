@@ -21,6 +21,9 @@ class FiguratePlugin implements Plugin<Project> {
             mavenLocal()
             // maven central is required to retrieve plugin dependencies.
             mavenCentral()
+            maven {
+                url 'https://oss.sonatype.org/content/repositories/snapshots'
+            }
         }
 
         // add custom configurations.
