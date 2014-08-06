@@ -24,16 +24,20 @@ class ConstellationsPlugin implements Plugin<Project> {
     }
 
     void addConfiguration(Project project, String key, String resource) {
-        def constellation = new GroovyShell(getClass().classLoader).evaluate(
-                getClass().getResourceAsStream("/configurations/${resource}.groovy").newReader())
+        def inputStream = getClass().getResourceAsStream("/configurations/${resource}.groovy")
+        if (inputStream) {
+            def constellation = new GroovyShell(getClass().classLoader).evaluate(inputStream.newReader())
 
-        log.info "Adding configuration [$key]"
+            log.info "Adding configuration [$key]"
 
-        def configuration = project.configurations.create("constellation\$$key")
-        configuration.transitive = false
-        // add constellation bundles to configuration dependency set
-        constellation.each {
-            project.dependencies.add(configuration.name, it)
+            def configuration = project.configurations.create("constellation\$$key")
+            configuration.transitive = false
+            // add constellation bundles to configuration dependency set
+            constellation.each {
+                project.dependencies.add(configuration.name, it)
+            }
+        } else {
+            log.warn "Resource for constellation not found [$resource]"
         }
     }
 }
