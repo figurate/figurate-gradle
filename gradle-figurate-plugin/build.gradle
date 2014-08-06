@@ -7,11 +7,14 @@ uploadArchives {
             repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
                 authentication(userName: sonatypeUsername, password: sonatypePassword)
             }
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots") {
+                authentication(userName: sonatypeUsername, password: sonatypePassword)
+            }
 
             pom.project {
                 name 'Gradle Figurate Plugin'
                 packaging 'jar'
-                description 'A Gradle plugin for building, configuraing and packaging OSGi applications'
+                description 'A Gradle plugin for building, configuring and packaging OSGi applications'
                 url 'http://figurate.org/'
 
                 scm {
