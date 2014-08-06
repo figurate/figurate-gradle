@@ -48,6 +48,7 @@ subprojects {
     }
 
     signing {
+        required { isReleaseVersion && gradle.taskGraph.hasTask("uploadArchives") }
         sign configurations.archives
     }
 
@@ -70,6 +71,7 @@ subprojects {
 
     group = 'org.figurate'
     version = release.projectVersion
+    ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 }
 
 task wrapper(type: Wrapper) {
