@@ -1,0 +1,5 @@
+ext.pomName = 'Gradle Curl Plugin'
+
+description = '''\
+A Gradle plugin to perform various curl functions.
+'''

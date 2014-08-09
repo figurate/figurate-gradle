@@ -1,0 +1,5 @@
+ext.pomName = 'Gradle Keytool Plugin'
+
+description = '''\
+A Gradle plugin to perform various keytool functions.
+'''
