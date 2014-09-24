@@ -1,5 +1,6 @@
 include 'gradle-keytool-plugin'
 include 'gradle-curl-plugin'
+include 'gradle-rsync-plugin'
 include 'gradle-figurate-plugin'
 //include 'gradle-openssl-plugin'
 
