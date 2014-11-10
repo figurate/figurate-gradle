@@ -74,7 +74,7 @@ subprojects {
                         url 'http://figurate.org/'
 
                         scm {
-                            url 'scm:git@github.com:figurate/figurate-gradle.git'
+                            url 'https://github.com/figurate/figurate-gradle'
                             connection 'scm:git@github.com:figurate/figurate-gradle.git'
                             developerConnection 'scm:git@github.com:figurate/figurate-gradle.git'
                         }
@@ -104,7 +104,7 @@ subprojects {
 //        allowLocalModifications = false
         // allow modifications due to bug in the release plugin..
         allowLocalModifications = true
-        releaseDryRun = true
+        releaseDryRun = releaseDryRun
         scm = 'git'
     }
 
