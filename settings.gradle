@@ -3,10 +3,7 @@ include 'gradle-curl-plugin'
 include 'gradle-rsync-plugin'
 include 'gradle-figurate-plugin'
 //include 'gradle-openssl-plugin'
-
 //include 'gradle-config-plugin'
-
 //include 'gradle-siterun-plugin'
-
 include 'gradle-constellations-plugin'
-
+include 'gradle-aem-plugin'

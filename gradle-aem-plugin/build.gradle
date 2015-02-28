@@ -1,0 +1,6 @@
+ext.pomName = 'Gradle AEM Plugin'
+
+description = '''\
+A Gradle plugin for launching Adobe Experience Manager. Useful for running integration and functional tests as part
+of a build process.
+'''
