@@ -6,7 +6,5 @@ jdk:
 
 before_install:
   - sudo apt-get update -qq
-  
-install:
-  - sudo apt-get install -y git
+  - sudo apt-get install -qq git
   
