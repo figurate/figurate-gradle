@@ -9,3 +9,4 @@ A collection of custom gradle plugins
 * gradle-keytool-plugin - keytool operations with sensible defaults
 * gradle-curl-plugin - curl operations with sensible defaults
 * gradle-openssl-plugin - openssl operations with sensible defaults
+* gradle-api-plugin - provide access to various well-known APIs (eg. cloud services, authentication, publish, etc.)
