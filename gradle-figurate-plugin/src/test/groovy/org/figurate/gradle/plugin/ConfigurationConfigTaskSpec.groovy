@@ -30,7 +30,7 @@ class ConfigurationConfigTaskSpec extends Specification {
         project.tasks.configuration.execute()
 
         then:
-        def configFile = new File(project.buildDir, "test-config/$project.tasks.configuration.configFilename")
+        def configFile = new File(project.buildDir, "test-config/$project.tasks.configuration.outputFilename")
         configFile.exists()
 
         and:

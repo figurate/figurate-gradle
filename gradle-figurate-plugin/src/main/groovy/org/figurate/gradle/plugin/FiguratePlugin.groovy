@@ -45,7 +45,7 @@ class FiguratePlugin implements Plugin<Project> {
             // require inclusion of the figurate bootstrap dependency.
             runtime 'org.figurate:bootstrap:master-SNAPSHOT'
             // require inclusion of (an) OSGi runtime (XXX: in future support configurable runtime)
-            runtime 'org.apache.felix:org.apache.felix.framework:4.0.2'
+//            runtime 'org.apache.felix:org.apache.felix.framework:4.0.2'
 
             // used for genscr task
 //            provided 'org.apache.felix:org.apache.felix.scr.ant:1.9.0'
@@ -102,15 +102,15 @@ class FiguratePlugin implements Plugin<Project> {
         project.mainClassName = 'org.figurate.FrameworkLauncher'
         project.tasks.run.with {
             // provide default arguments for the application run task.
-            args "$LauncherConfigTask.DEFAULT_CONFIG_DIR/$project.tasks.launcherConfig.configFilename"
+            args "$LauncherConfigTask.DEFAULT_CONFIG_DIR/$project.tasks.launcherConfig.outputFilename"
             // set the working directory for the application run task.
             workingDir 'build'
         }
         // set the default JVM arguments for the application.
         project.applicationDefaultJvmArgs = [
                 "-Xmx512m",
-                "-Dlogback.configurationFile=$LauncherConfigTask.DEFAULT_CONFIG_DIR/$project.tasks.loggerConfig.configFilename",
-                "-DconfigurationAdmin.configurationFile=$ConfigurationConfigTask.DEFAULT_CONFIG_DIR/$project.tasks.configurationConfig.configFilename"
+                "-Dlogback.configurationFile=$LauncherConfigTask.DEFAULT_CONFIG_DIR/$project.tasks.loggerConfig.outputFilename",
+                "-DconfigurationAdmin.configurationFile=$ConfigurationConfigTask.DEFAULT_CONFIG_DIR/$project.tasks.configurationConfig.outputFilename"
         ]
     }
 }

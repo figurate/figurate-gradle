@@ -6,7 +6,7 @@ import groovy.text.Template
 /**
  * Created by fortuna on 21/06/14.
  */
-class LoggerConfigTask extends AbstractConfigTask {
+class LoggerConfigTask extends AbstractTemplateTask {
 
     URL configTemplate = getClass().getResource('/config/logback.groovy')
 
@@ -24,7 +24,7 @@ class LoggerConfigTask extends AbstractConfigTask {
     }
 
     @Override
-    String getConfigFilename() {
+    String getOutputFilename() {
         'logback.groovy'
     }
 }

@@ -53,7 +53,7 @@ class FiguratePluginSpec extends Specification {
 
         then:
         new File(project.buildDir,
-                "$LauncherConfigTask.DEFAULT_CONFIG_DIR/$project.tasks.launcherConfig.configFilename").exists()
+                "$LauncherConfigTask.DEFAULT_CONFIG_DIR/$project.tasks.launcherConfig.outputFilename").exists()
     }
 
     def 'verify custom launcher config task'() {
@@ -84,7 +84,7 @@ class FiguratePluginSpec extends Specification {
         project.tasks.testLauncherConfig.execute()
 
         then:
-        new File(project.buildDir, "test-config/$project.tasks.launcherConfig.configFilename").exists()
+        new File(project.buildDir, "test-config/$project.tasks.launcherConfig.outputFilename").exists()
     }
 
     def 'verify installApp task'() {

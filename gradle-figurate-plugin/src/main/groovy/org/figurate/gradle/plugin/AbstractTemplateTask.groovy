@@ -8,7 +8,7 @@ import org.gradle.api.tasks.TaskOutputs
 /**
  * Created by fortuna on 10/05/14.
  */
-abstract class AbstractConfigTask extends DefaultTask {
+abstract class AbstractTemplateTask extends DefaultTask {
 
     static final String DEFAULT_CONFIG_DIR = 'conf'
 
@@ -20,14 +20,12 @@ abstract class AbstractConfigTask extends DefaultTask {
         taskOutputs.files.each { outputDir ->
             outputDir.mkdirs()
         }
-        def configTemplate = getTemplate()
-        def config = configTemplate.make(getBinding())
-        new File(outputDir, getConfigFilename()).write(config as String)
+        new File(outputDir, getOutputFilename()).write(template.make(binding) as String)
     }
 
     abstract Template getTemplate()
 
     abstract Map getBinding()
 
-    abstract String getConfigFilename()
+    abstract String getOutputFilename()
 }

@@ -6,7 +6,7 @@ import groovy.text.Template
 /**
  * Created by fortuna on 21/06/14.
  */
-class ConfigurationConfigTask extends AbstractConfigTask {
+class ConfigurationConfigTask extends AbstractTemplateTask {
 
     URL configTemplate = getClass().getResource('/config/configuration.groovy.template')
 
@@ -26,7 +26,7 @@ class ConfigurationConfigTask extends AbstractConfigTask {
     }
 
     @Override
-    String getConfigFilename() {
+    String getOutputFilename() {
         'configuration.groovy'
     }
 
