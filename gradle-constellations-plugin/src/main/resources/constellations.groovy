@@ -14,5 +14,6 @@
         sling: 'sling/minimal',
         // http://sling.apache.org/documentation/bundles/sling-health-check-tool.html
         healthcheck: 'sling/healthcheck',
-        sling7: 'sling/sling7'
+        sling7: 'sling/sling7',
+        rss   : 'newsagent/rss'
 ]

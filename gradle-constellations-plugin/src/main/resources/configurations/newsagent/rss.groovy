@@ -1,0 +1,1 @@
+['org.mnode.newsagent:newsagent:0.9.1-SNAPSHOT']
