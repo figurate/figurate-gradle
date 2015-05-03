@@ -84,7 +84,7 @@ class FiguratePluginSpec extends Specification {
         project.tasks.testLauncherConfig.execute()
 
         then:
-        new File(project.buildDir, "test-config/$project.tasks.launcherConfig.outputFile").exists()
+        new File(project.buildDir, "test-config/$project.tasks.launcherConfig.outputFile.name").exists()
     }
 
     def 'verify installApp task'() {
