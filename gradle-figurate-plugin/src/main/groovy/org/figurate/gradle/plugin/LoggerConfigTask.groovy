@@ -2,12 +2,14 @@ package org.figurate.gradle.plugin
 
 import groovy.text.GStringTemplateEngine
 import groovy.text.Template
+import org.gradle.api.tasks.Input
 
 /**
  * Created by fortuna on 21/06/14.
  */
 class LoggerConfigTask extends AbstractTemplateTask {
 
+    @Input
     URL configTemplate = getClass().getResource('/config/logback.groovy')
 
     void setConfigTemplate(URL configTemplate) {
