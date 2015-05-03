@@ -37,8 +37,8 @@ class LauncherConfigTask extends AbstractTemplateTask {
     }
 
     @Override
-    String getOutputFilename() {
-        'launcher.groovy'
+    File getOutputFile() {
+        new File(outputDir, 'launcher.groovy')
     }
 
     /*

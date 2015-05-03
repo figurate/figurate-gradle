@@ -102,15 +102,15 @@ class FiguratePlugin implements Plugin<Project> {
         project.mainClassName = 'org.figurate.FrameworkLauncher'
         project.tasks.run.with {
             // provide default arguments for the application run task.
-            args "$LauncherConfigTask.DEFAULT_CONFIG_DIR/$project.tasks.launcherConfig.outputFilename"
+            args "$LauncherConfigTask.DEFAULT_CONFIG_DIR/$project.tasks.launcherConfig.outputFile.name"
             // set the working directory for the application run task.
             workingDir 'build'
         }
         // set the default JVM arguments for the application.
         project.applicationDefaultJvmArgs = [
                 "-Xmx512m",
-                "-Dlogback.configurationFile=$LauncherConfigTask.DEFAULT_CONFIG_DIR/$project.tasks.loggerConfig.outputFilename",
-                "-DconfigurationAdmin.configurationFile=$ConfigurationConfigTask.DEFAULT_CONFIG_DIR/$project.tasks.configurationConfig.outputFilename"
+                "-Dlogback.configurationFile=$LauncherConfigTask.DEFAULT_CONFIG_DIR/$project.tasks.loggerConfig.outputFile.name",
+                "-DconfigurationAdmin.configurationFile=$ConfigurationConfigTask.DEFAULT_CONFIG_DIR/$project.tasks.configurationConfig.outputFile.name"
         ]
     }
 }

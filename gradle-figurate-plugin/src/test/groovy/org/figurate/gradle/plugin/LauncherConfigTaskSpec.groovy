@@ -22,7 +22,7 @@ class LauncherConfigTaskSpec extends Specification {
         project.tasks.launcher.execute()
 
         then:
-        def configFile = new File(project.buildDir, "test-config/$project.tasks.launcher.outputFilename")
+        def configFile = new File(project.buildDir, "test-config/$project.tasks.launcher.outputFile.name")
         configFile.exists()
 
         and:

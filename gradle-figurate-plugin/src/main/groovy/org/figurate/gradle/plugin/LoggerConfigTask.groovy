@@ -10,6 +10,18 @@ class LoggerConfigTask extends AbstractTemplateTask {
 
     URL configTemplate = getClass().getResource('/config/logback.groovy')
 
+    void setConfigTemplate(URL configTemplate) {
+        this.configTemplate = configTemplate
+    }
+
+    void setConfigTemplate(URI configTemplate) {
+        setConfigTemplate(configTemplate.toURL())
+    }
+
+    void setConfigTemplate(File configTemplate) {
+        setConfigTemplate(configTemplate.toURI())
+    }
+
     @Override
     Template getTemplate() {
         new GStringTemplateEngine().createTemplate(configTemplate)
@@ -24,7 +36,7 @@ class LoggerConfigTask extends AbstractTemplateTask {
     }
 
     @Override
-    String getOutputFilename() {
-        'logback.groovy'
+    File getOutputFile() {
+        new File(outputDir, 'logback.groovy')
     }
 }

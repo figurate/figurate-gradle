@@ -2,7 +2,9 @@ package org.figurate.gradle.plugin
 
 import groovy.text.Template
 import org.gradle.api.DefaultTask
+import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.OutputDirectory
+import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 
 /**
@@ -17,12 +19,14 @@ abstract class AbstractTemplateTask extends DefaultTask {
 
     @TaskAction
     def createConfig() {
-        new File(outputDir, getOutputFilename()).write(template.make(binding) as String)
+        outputFile.write(template.make(binding.clone()) as String)
     }
 
     abstract Template getTemplate()
 
+    @Input
     abstract Map getBinding()
 
-    abstract String getOutputFilename()
+    @OutputFile
+    abstract File getOutputFile()
 }

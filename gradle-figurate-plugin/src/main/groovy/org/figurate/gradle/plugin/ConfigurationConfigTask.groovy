@@ -26,8 +26,8 @@ class ConfigurationConfigTask extends AbstractTemplateTask {
     }
 
     @Override
-    String getOutputFilename() {
-        'configuration.groovy'
+    File getOutputFile() {
+        new File(outputDir, 'configuration.groovy')
     }
 
     /*
