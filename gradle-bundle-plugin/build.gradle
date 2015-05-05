@@ -1,0 +1,5 @@
+ext.pomName = 'Gradle Bundle Plugin'
+
+description = '''\
+A Gradle plugin for building, OSGi bundles.
+'''
