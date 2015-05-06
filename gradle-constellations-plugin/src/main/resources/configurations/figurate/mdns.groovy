@@ -1,1 +1,1 @@
-['org.figurate:figurate-discovery:master-SNAPSHOT']
+['org.figurate:figurate-discovery:master-SNAPSHOT', 'com.github.rickyclarkson:jmdns:3.4.2-r353-1']
