@@ -5,7 +5,7 @@
         jcr: 'modeshape/jcr',
         logback: 'logback/slf4j',
         jackson: 'jackson/jaxrs',
-        amdatu: 'amdatu/rest',
+        rest: 'amdatu/rest',
         mongodb: 'mongodb/mongodb',
         useradmin: 'felix/useradmin',
         requestlog: 'amdatu/requestlog',
