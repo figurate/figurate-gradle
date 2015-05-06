@@ -19,6 +19,21 @@ class BundlePlugin implements Plugin<Project> {
                 embed.transitive = false
             }
 
+            dependencies {
+                compile 'org.apache.felix:org.apache.felix.scr.ant:1.9.0',
+                        'biz.aQute.bnd:bndlib:2.2.0'
+            }
+
+            ant.properties.src = 'build/classes/main'
+            ant.properties.classes = 'build/classes/main'
+
+            task('genscr', dependsOn: [compileJava, compileGroovy]) << {
+//                println configurations.compile.asPath
+                ant.taskdef(resource: 'scrtask.properties', classpath: sourceSets.main.compileClasspath.asPath)
+                ant.scr(srcdir: ant.properties.src, destdir: ant.properties.classes, scanClasses: true, classpath: sourceSets.main.compileClasspath.asPath)
+            }
+            jar.dependsOn(genscr)
+
             afterEvaluate {
                 jar {
                     into('lib') {
