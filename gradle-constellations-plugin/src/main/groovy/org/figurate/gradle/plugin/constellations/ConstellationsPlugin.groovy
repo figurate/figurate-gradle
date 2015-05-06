@@ -13,6 +13,16 @@ class ConstellationsPlugin implements Plugin<Project> {
     @Override
     void apply(Project project) {
 
+        project.repositories {
+            // amdatu for rest/web services..
+            ivy {
+                url 'http://repository.amdatu.org/release/'
+                layout 'pattern', {
+                    artifact "[artifact]/[artifact]-[revision].[ext]"
+                }
+            }
+        }
+
         // parse a list of constellation configurations that provide an alias for a group of bundles.
         def constellations = new GroovyShell(getClass().classLoader).evaluate(
                 getClass().getResourceAsStream('/constellations.groovy').newReader())
