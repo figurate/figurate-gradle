@@ -83,5 +83,5 @@ release {
 }
 
 group = 'org.figurate'
-version = release.projectVersion
+version = System.getenv('RELEASE_VERSION') ?: release.projectVersion
 ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
