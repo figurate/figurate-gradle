@@ -44,6 +44,24 @@ class CloudConfigTaskTest extends Specification {
         configFile.exists()
 
         and:
-        configFile.text == getClass().getResourceAsStream('/templates/cloud-config.yml.template').text
+        configFile.text == '''#cloud-config
+
+packages:
+- git
+- ufw
+- logwatch
+timezone: \'\'
+users:
+- name: fortuna
+  ssh-authorized-keys: null
+  groups: sudo
+  shell: /bin/bash
+runcmd:
+- sed -i -e '/^PermitRootLogin/s/^.*$/PermitRootLogin no/' /etc/ssh/sshd_config
+- sed -i -e '/^PasswordAuthentication/s/^.*$/PasswordAuthentication no/' /etc/ssh/sshd_config
+- restart ssh
+- ufw --force enable
+write_files: {}
+'''
     }
 }
