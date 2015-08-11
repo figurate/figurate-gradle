@@ -1,0 +1,9 @@
+ext.pomName = 'Gradle CloudInit Plugin'
+
+description = '''\
+A Gradle plugin for constructing a cloud-config yaml file.
+'''
+
+dependencies {
+    compile 'org.yaml:snakeyaml:1.15'
+}
