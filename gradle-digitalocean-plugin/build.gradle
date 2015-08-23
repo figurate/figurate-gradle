@@ -1,0 +1,13 @@
+ext.pomName = 'Gradle Digital Ocean Plugin'
+
+description = '''\
+A Gradle plugin for accessing the Digital Ocean API.
+'''
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile 'org._10ne.gradle:rest-gradle-plugin:0.3.2'
+}
