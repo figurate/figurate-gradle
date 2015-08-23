@@ -42,6 +42,7 @@ class BundlePlugin implements Plugin<Project> {
 
                     manifest {
                         instruction 'Bundle-ClassPath', ".,${configurations.embed.dependencies.collect { "lib/$it.name-${it.version}.jar" }.join(',')}"
+//                        instruction 'Include-Resource', "${configurations.embed.dependencies.collect { "@$it.name-${it.version}.jar" }.join(',')}"
                     }
                 }
             }
