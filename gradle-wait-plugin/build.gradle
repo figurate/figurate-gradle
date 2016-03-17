@@ -1,0 +1,5 @@
+ext.pomName = 'Gradle Wait Plugin'
+
+description = '''\
+A Gradle plugin to wait for service availability.
+'''
