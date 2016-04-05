@@ -23,7 +23,7 @@ subprojects {
     dependencies {
         compile gradleApi()
 
-        testCompile 'org.spockframework:spock-core:0.7-groovy-1.8'
+        testCompile 'org.spockframework:spock-core:1.0.-groovy-2.4'
         // required for mocking non-interface classes in spock..
         testCompile 'cglib:cglib-nodep:3.1'
     }
