@@ -9,34 +9,9 @@ import java.security.KeyStore
  */
 class KeytoolTask extends Exec {
 
-    def argMap = [:]
-
     KeytoolTask() {
-        executable "${new File(environment['JAVA_HOME'], 'bin').canonicalPath}/keytool"
-    }
-
-    def propertyMissing(String name) {
-        // allow dollar prefix to work around reserved keywords (e.g. 'new')
-        args "-${name - ~/^\$/}"
-    }
-
-    def propertyMissing(String name, String value) {
-        if (value) {
-            // allow dollar prefix to work around reserved keywords (e.g. 'new')
-            String argKey = "-${name - ~/^\$/}"
-            if (argMap[name]) {
-                def newArgs = args
-                newArgs[newArgs.indexOf(argKey) + 1] = value
-                setArgs newArgs
-            } else {
-                args argKey, value
-            }
-            argMap[name] = value
-        }
-    }
-
-    void setKeystore(String keystore) {
-        args '-keystore', new File(keystore).canonicalPath
+        executable "${new File((String) environment['JAVA_HOME'], 'bin').canonicalPath}/keytool"
+        extensions.add('options', new KeytoolArgsExtension())
     }
 
     def extractPrivateKey = { keystoreName, keystorePassword, alias ->
@@ -47,5 +22,29 @@ class KeytoolTask extends Exec {
         builder << new sun.misc.BASE64Encoder().encode(ks.getKey(alias, keystorePassword.toCharArray()).getEncoded())
         builder << "-----END PRIVATE KEY-----\n"
         builder.toString()
+    }
+
+    class KeytoolArgsExtension {
+
+        def argMap = [:]
+
+        def propertyMissing(String name, String value) {
+            if (value) {
+                // allow dollar prefix to work around reserved keywords (e.g. 'new')
+                String argKey = "-${name - ~/^\$/}"
+                if (argMap[name]) {
+                    def newArgs = KeytoolTask.this.args
+                    newArgs[newArgs.indexOf(argKey) + 1] = value
+                    KeytoolTask.this.setArgs newArgs
+                } else {
+                    KeytoolTask.this.args argKey, value
+                }
+                argMap[name] = value
+            }
+        }
+
+        void setKeystore(String keystore) {
+            KeytoolTask.this.args '-keystore', new File(keystore).canonicalPath
+        }
     }
 }

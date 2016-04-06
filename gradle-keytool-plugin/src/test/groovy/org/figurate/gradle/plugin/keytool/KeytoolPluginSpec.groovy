@@ -15,10 +15,14 @@ class KeytoolPluginSpec extends Specification {
         project.apply plugin: 'keytool'
 
         and:
-        project.tasks.keytool.list
-        project.tasks.keytool.keystore = "${System.getenv()['JAVA_HOME']}/jre/lib/security/cacerts"
-        project.tasks.keytool.storepass = 'changeit'
-//        project.tasks.keytool.alias = 'test-host'
+        project.tasks.keytool {
+            args '-list'
+            options {
+                keystore = "${System.getenv()['JAVA_HOME']}/jre/lib/security/cacerts"
+                storepass = 'changeit'
+//                alias = 'test-host'
+            }
+        }
 
         expect:
         project.tasks.keytool instanceof KeytoolTask
@@ -34,7 +38,12 @@ class KeytoolPluginSpec extends Specification {
         project.apply plugin: 'keytool'
 
         and:
-        project.tasks.genkey.alias = 'genkey'
+        project.tasks.genkey {
+            options {
+                alias = 'genkey'
+            }
+        }
+
 
         when:
         project.tasks.genkey.execute()
@@ -52,7 +61,11 @@ class KeytoolPluginSpec extends Specification {
         project.tasks.genkey.execute()
 
         and:
-        project.tasks.storepasswd.$new = 'changeit2'
+        project.tasks.storepasswd {
+            options {
+                $new = 'changeit2'
+            }
+        }
 
         when:
         project.tasks.storepasswd.execute()
