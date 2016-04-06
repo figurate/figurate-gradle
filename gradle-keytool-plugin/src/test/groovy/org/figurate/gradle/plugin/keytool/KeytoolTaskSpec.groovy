@@ -15,9 +15,13 @@ class KeytoolTaskSpec extends Specification {
         project.task('keytool', type: KeytoolTask)
 
         and:
-        project.tasks.keytool.list
-        project.tasks.keytool.keystore = "${System.getenv()['JAVA_HOME']}/jre/lib/security/cacerts"
-        project.tasks.keytool.storepass = 'changeit'
+        project.tasks.keytool {
+            args '-list'
+            options {
+                keystore = "${System.getenv()['JAVA_HOME']}/jre/lib/security/cacerts"
+                storepass = 'changeit'
+            }
+        }
 
         and: 'capture output'
         project.tasks.keytool.standardOutput = new ByteArrayOutputStream()
