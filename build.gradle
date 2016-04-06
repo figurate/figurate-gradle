@@ -8,10 +8,11 @@ buildscript {
     }
 }
 
+apply plugin: 'pl.allegro.tech.build.axion-release'
+
 subprojects {
 
     apply plugin: 'groovy'
-    apply plugin: 'pl.allegro.tech.build.axion-release'
     apply plugin: 'maven'
     apply plugin: 'signing'
 
@@ -21,8 +22,9 @@ subprojects {
 
     dependencies {
         compile gradleApi()
+        compile 'org.codehaus.groovy:groovy-all:2.4.4'
 
-        testCompile 'org.spockframework:spock-core:0.7-groovy-1.8'
+        testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
         // required for mocking non-interface classes in spock..
         testCompile 'cglib:cglib-nodep:3.1'
     }
@@ -48,6 +50,8 @@ subprojects {
         required { isReleaseVersion && gradle.taskGraph.hasTask("uploadArchives") }
         sign configurations.archives
     }
+
+    ext.pomName = ''
 
     afterEvaluate {
         uploadArchives {
@@ -94,20 +98,25 @@ subprojects {
         }
     }
 
-    scmVersion {
-        tag {
-            prefix = 'figurate-gradle'
-        }
-    }
-
     group = 'org.figurate'
-    version = scmVersion.version
-    ext {
-        pomName = ''
+    version = rootProject.scmVersion.version
 
+    ext {
         isReleaseVersion = !version.endsWith("SNAPSHOT")
+
         // sonatype credentials
         sonatypeUsername = project.hasProperty('sonatypeUsername') ? project.getProperty('sonatypeUsername') : ''
         sonatypePassword = project.hasProperty('sonatypePassword') ? project.getProperty('sonatypePassword') : ''
+    }
+}
+
+scmVersion {
+    tag {
+        prefix = 'figurate-gradle'
+    }
+    versionCreator 'versionWithBranch'
+    nextVersion {
+        suffix = 'alpha2'
+        separator = '-'
     }
 }
