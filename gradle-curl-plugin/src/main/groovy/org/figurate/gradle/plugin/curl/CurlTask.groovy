@@ -1,14 +1,15 @@
 package org.figurate.gradle.plugin.curl
 
-import org.gradle.api.tasks.Exec
+import org.gradle.api.tasks.AbstractExecTask
 
 /**
  * Created by fortuna on 8/05/14.
  */
-class CurlTask extends Exec {
+class CurlTask extends AbstractExecTask {
 
     CurlTask() {
-        executable 'curl'
+        super(CurlTask)
+        executable '/usr/bin/curl'
     }
 
     def propertyMissing(String name) {

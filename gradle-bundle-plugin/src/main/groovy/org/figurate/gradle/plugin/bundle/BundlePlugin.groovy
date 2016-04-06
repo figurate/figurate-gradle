@@ -24,13 +24,13 @@ class BundlePlugin implements Plugin<Project> {
                         'biz.aQute.bnd:biz.aQute.bndlib:3.1.0'
             }
 
-            ant.properties.src = 'build/classes/main'
-            ant.properties.classes = 'build/classes/main'
+            ant.properties.src = "$project.buildDir/classes/main"
+            ant.properties.classes = "$project.buildDir/classes/main"
 
             task('genscr', dependsOn: [compileJava, compileGroovy]) << {
-//                println configurations.compile.asPath
                 ant.taskdef(resource: 'scrtask.properties', classpath: sourceSets.main.compileClasspath.asPath)
-                ant.scr(srcdir: ant.properties.src, destdir: ant.properties.classes, scanClasses: true, classpath: sourceSets.main.compileClasspath.asPath)
+                ant.scr(srcdir: ant.properties.src, destdir: ant.properties.classes, scanClasses: true,
+                        classpath: sourceSets.main.compileClasspath.asPath)
             }
             jar.dependsOn(genscr)
 
