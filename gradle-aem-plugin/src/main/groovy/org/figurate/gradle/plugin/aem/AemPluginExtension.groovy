@@ -5,6 +5,6 @@ package org.figurate.gradle.plugin.aem
  */
 class AemPluginExtension {
     def installFile
-    def licenseFile
+    def licenseDir
     def installDir
 }
