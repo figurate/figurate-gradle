@@ -21,6 +21,12 @@ class ConstellationsPlugin implements Plugin<Project> {
                     artifact "[artifact]/[artifact]-[revision].[ext]"
                 }
             }
+            ivy {
+                url 'http://repository.amdatu.org/dependencies/'
+                layout 'pattern', {
+                    artifact "[artifact]/[artifact]-[revision].[ext]"
+                }
+            }
         }
 
         // parse a list of constellation configurations that provide an alias for a group of bundles.

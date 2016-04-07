@@ -44,6 +44,7 @@ class FiguratePlugin implements Plugin<Project> {
         project.dependencies {
             // require inclusion of the figurate bootstrap dependency.
             runtime 'org.figurate:bootstrap:master-SNAPSHOT'
+            testCompile 'org.figurate:test:master-SNAPSHOT'
             // require inclusion of (an) OSGi runtime (XXX: in future support configurable runtime)
 //            runtime 'org.apache.felix:org.apache.felix.framework:4.0.2'
 
