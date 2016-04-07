@@ -4,3 +4,7 @@ description = '''\
 A Gradle plugin for launching Adobe Experience Manager. Useful for running integration and functional tests as part
 of a build process.
 '''
+
+dependencies {
+    compile 'org.apache.ant:ant:1.9.2'
+}
