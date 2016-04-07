@@ -10,6 +10,17 @@ buildscript {
 
 apply plugin: 'pl.allegro.tech.build.axion-release'
 
+scmVersion {
+    tag {
+        prefix = 'figurate-gradle'
+    }
+    versionCreator 'versionWithBranch'
+    nextVersion {
+        suffix = 'alpha'
+        separator = '-'
+    }
+}
+
 subprojects {
 
     apply plugin: 'groovy'
@@ -107,16 +118,5 @@ subprojects {
         // sonatype credentials
         sonatypeUsername = project.hasProperty('sonatypeUsername') ? project.getProperty('sonatypeUsername') : ''
         sonatypePassword = project.hasProperty('sonatypePassword') ? project.getProperty('sonatypePassword') : ''
-    }
-}
-
-scmVersion {
-    tag {
-        prefix = 'figurate-gradle'
-    }
-    versionCreator 'versionWithBranch'
-    nextVersion {
-        suffix = 'alpha2'
-        separator = '-'
     }
 }
