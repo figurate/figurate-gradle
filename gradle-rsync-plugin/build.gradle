@@ -1,0 +1,5 @@
+ext.pomName = 'Gradle RSync Plugin'
+
+description = '''\
+A Gradle plugin to perform various rsync functions.
+'''

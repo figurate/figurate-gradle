@@ -1,13 +1,14 @@
 package org.figurate.gradle.plugin.rsync
 
-import org.gradle.api.tasks.Exec
+import org.gradle.api.tasks.AbstractExecTask
 
 /**
  * Created by fortuna on 24/09/14.
  */
-class RsyncTask extends Exec {
+class RsyncTask extends AbstractExecTask {
 
     RsyncTask() {
+        super(RsyncTask)
         executable 'rsync'
     }
 
