@@ -1,6 +1,5 @@
 package org.figurate.gradle.plugin.curl
 
-import groovy.ui.SystemOutputInterceptor
 import org.gradle.api.Project
 import org.gradle.testfixtures.ProjectBuilder
 import spock.lang.Specification
