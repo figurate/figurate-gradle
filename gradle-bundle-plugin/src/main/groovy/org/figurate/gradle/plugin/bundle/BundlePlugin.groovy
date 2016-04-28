@@ -30,7 +30,7 @@ class BundlePlugin implements Plugin<Project> {
 
             task('genscr', dependsOn: [compileJava, compileGroovy]) << {
                 // genscr requires the src dir to exist, using output to create as needed..
-                outputs.dir = ant.properties.classes
+                outputs.dir ant.properties.classes
                 ant.taskdef(resource: 'scrtask.properties', classpath: sourceSets.main.compileClasspath.asPath)
                 ant.scr(srcdir: ant.properties.src, destdir: ant.properties.classes, scanClasses: true,
                         classpath: sourceSets.main.compileClasspath.asPath)
