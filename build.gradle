@@ -67,6 +67,10 @@ subprojects {
         sign configurations.archives
     }
 
+    codenarc {
+        configFile = "${rootProject.projectDir}/config/codenarc/codenarc.xml"
+    }
+    
     ext.pomName = ''
 
     afterEvaluate {
