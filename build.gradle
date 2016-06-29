@@ -68,7 +68,7 @@ subprojects {
     }
 
     codenarc {
-        configFile = file("${rootProject.projectDir}/config/codenarc/codenarc.xml")
+        configFile = rootProject.file('config/codenarc/codenarc.xml')
         reportFormat = 'xml'
     }
     
