@@ -68,7 +68,7 @@ subprojects {
     }
 
     codenarc {
-        config = "${rootProject.projectDir}/config/codenarc/codenarc.xml"
+        configFile = file("${rootProject.projectDir}/config/codenarc/codenarc.xml")
     }
     
     ext.pomName = ''
