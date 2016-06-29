@@ -4,7 +4,7 @@ jdk:
   - oraclejdk7
   - openjdk7
 script:
-  - ./gradlew check codenarc
+  - ./gradlew check
 addons:
   hostname: travis-ci
 after_success:
