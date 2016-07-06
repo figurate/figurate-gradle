@@ -50,7 +50,7 @@ class BundlePlugin implements Plugin<Project> {
         }
     }
 
-    class BundlePluginExtension {
+    static class BundlePluginExtension {
         String embedPath = 'lib'
     }
 }
