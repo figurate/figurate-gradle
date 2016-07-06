@@ -34,17 +34,23 @@ class BundlePlugin implements Plugin<Project> {
             }
             jar.dependsOn(genscr)
 
+            extensions.create("bundle", BundlePluginExtension)
+
             afterEvaluate {
                 jar {
-                    into('lib') {
+                    into(bundle.embedPath) {
                         from configurations.embed
                     }
 
                     manifest {
-                        instruction 'Bundle-ClassPath', ".,${configurations.embed.dependencies.collect { "lib/$it.name-${it.version}.jar" }.join(',')}"
+                        instruction 'Bundle-ClassPath', ".,${configurations.embed.dependencies.collect { "$bundle.embedPath/$it.name-${it.version}.jar" }.join(',')}"
                     }
                 }
             }
         }
+    }
+
+    class BundlePluginExtension {
+        String embedPath = 'lib'
     }
 }
