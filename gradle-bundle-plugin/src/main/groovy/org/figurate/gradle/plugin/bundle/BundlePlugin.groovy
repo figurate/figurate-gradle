@@ -38,7 +38,11 @@ class BundlePlugin implements Plugin<Project> {
                         classpath: sourceSets.main.compileClasspath.asPath)
                 }
             }
-            jar.dependsOn(genscr)
+            
+            jar {
+                dependsOn(genscr)
+                includeEmptyDirs = false
+            }
 
             extensions.create("bundle", BundlePluginExtension)
 
