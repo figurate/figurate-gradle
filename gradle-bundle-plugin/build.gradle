@@ -1,5 +1,16 @@
 ext.pomName = 'Gradle Bundle Plugin'
 
 description = '''\
-A Gradle plugin for building, OSGi bundles.
+A Gradle plugin for building, packaging and deploying OSGi bundles.
 '''
+
+repositories {
+    maven {
+        url 'https://plugins.gradle.org/m2/'
+    }
+}
+        
+dependencies {
+    compile 'org._10ne.gradle:rest-gradle-plugin:0.4.2',
+        'org.apache.httpcomponents:httpmime:4.3.6'
+}
