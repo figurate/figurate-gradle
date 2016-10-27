@@ -5,7 +5,7 @@ import org.apache.http.entity.mime.MultipartEntityBuilder
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional
 
-abstract class AbstractBundleTask extends RestTask {
+class BundleActionTask extends RestTask {
 
     @Input
     String action
@@ -18,7 +18,7 @@ abstract class AbstractBundleTask extends RestTask {
     @Optional
     Map parameters
     
-    AbstractBundleTask() {
+    BundleActionTask() {
         client.encoder.putAt('multipart/form-data', { body ->
             MultipartEntityBuilder multipartRequestEntity = MultipartEntityBuilder.create()
             body.each { part ->

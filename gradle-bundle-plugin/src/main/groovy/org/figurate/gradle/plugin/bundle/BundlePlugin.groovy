@@ -44,6 +44,52 @@ class BundlePlugin implements Plugin<Project> {
                 includeEmptyDirs = false
             }
 
+            // define bundle tasks..
+            
+            /** Installs (or updates) and optionally starts one or more bundles. */
+            task bundleInstall(type: BundleInstallTask) { 
+                bundlestart = true
+                bundlestartlevel = 20
+                bundlefile = file("$buildDir/libs/$jar.archiveName")
+                userAgent = project.name
+            }
+            
+            /** Starts the bundle addressed by the request URL. */
+            task bundleStart(type: BundleActionTask) { 
+                action = 'start'
+                userAgent = project.name
+            }
+            
+            /** Stops the bundle addressed by the request URL. */
+            task bundleStop(type: BundleActionTask) { 
+                action = 'stop'
+                userAgent = project.name
+            }
+            
+            /** Calls PackageAdmin.refreshPackages(Bundle[]) with the bundle as its sole argument thus forcing the bundle to be rewired. */
+            task bundleRefresh(type: BundleActionTask) { 
+                action = 'refresh'
+                userAgent = project.name
+            }
+            
+            /** Calls Bundle.update() on the bundle addressed by the request URL or tries to update the bundle through the OBR. */
+            task bundleUpdate(type: BundleActionTask) { 
+                action = 'update'
+                userAgent = project.name
+            }
+            
+            /** Calls Bundle.uninstall() on the bundle addressed by the request URL. After the installation the framework must be refreshed (see refreshPackages above). */
+            task bundleUninstall(type: BundleActionTask) { 
+                action = 'uninstall'
+                userAgent = project.name
+            }
+            
+            /** Calls PackageAdmin.refreshPackages(Bundle[]) with a null argument thus refreshing all pending bundles. */
+            task bundleRefreshAll(type: BundleActionTask) { 
+                action = 'refreshPackages'
+                userAgent = project.name
+            }
+            
             extensions.create("bundle", BundlePluginExtension)
 
             afterEvaluate {

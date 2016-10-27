@@ -3,7 +3,7 @@ package org.figurate.gradle.plugin.bundle
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional
 
-class BundleInstallTask extends AbstractBundleTask {
+class BundleInstallTask extends BundleActionTask {
 
     @Input
     File bundlefile
