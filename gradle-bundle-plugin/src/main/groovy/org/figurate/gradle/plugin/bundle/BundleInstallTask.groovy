@@ -1,24 +1,33 @@
 package org.figurate.gradle.plugin.bundle
 
-import org._10ne.gradle.rest.RestTask
-import org.apache.http.entity.mime.MultipartEntityBuilder
+import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.Optional
 
-class BundleInstallTask extends RestTask {
+class BundleInstallTask extends AbstractBundleTask {
 
+    @Input
+    File bundlefile
+
+    @Input
+    @Optional
+    Boolean bundlestart
+    
+    @Input
+    @Optional
+    Integer bundlestartlevel
+    
     BundleInstallTask() {
-        client.encoder.putAt('multipart/form-data', { body ->
-            MultipartEntityBuilder multipartRequestEntity = MultipartEntityBuilder.create()
-            body.each { part ->
-                if (part.value instanceof File) {
-                    multipartRequestEntity.addBinaryBody(part.key, part.value).build()
-                } else {
-                    multipartRequestEntity.addTextBody(part.key, part.value).build()
-                }
-            }
-            multipartRequestEntity.build()
-        })
-
-        httpMethod = 'post'
-        contentType = 'multipart/form-data'
+        action = 'install'
+    }
+    
+    void executeRequest() {
+        parameters = [bundlefile: bundlefile]
+        if (bundlestart) {
+            parameters['bundlestart'] = bundlestart
+        }
+        if (bundlestartlevel) {
+            parameters['bundlestartlevel'] = bundlestartlevel
+        }
+        super.executeRequest()
     }
 }
