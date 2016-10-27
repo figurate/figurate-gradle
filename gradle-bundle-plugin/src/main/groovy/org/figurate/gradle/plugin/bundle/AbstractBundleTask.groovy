@@ -44,7 +44,7 @@ abstract class AbstractBundleTask extends RestTask {
         
         def paramsMap = [action: action]
         if (parameters) {
-            paramsMap.addAll(parameters)
+            paramsMap.putAll(parameters)
         }
         requestBody = paramsMap
         
