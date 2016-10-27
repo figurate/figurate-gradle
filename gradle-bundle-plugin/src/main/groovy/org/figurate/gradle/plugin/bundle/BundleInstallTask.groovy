@@ -23,10 +23,10 @@ class BundleInstallTask extends AbstractBundleTask {
     void executeRequest() {
         parameters = [bundlefile: bundlefile]
         if (bundlestart) {
-            parameters['bundlestart'] = bundlestart
+            parameters['bundlestart'] = bundlestart as String
         }
         if (bundlestartlevel) {
-            parameters['bundlestartlevel'] = bundlestartlevel
+            parameters['bundlestartlevel'] = bundlestartlevel as String
         }
         super.executeRequest()
     }
