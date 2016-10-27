@@ -55,24 +55,24 @@ class BundlePlugin implements Plugin<Project> {
             extensions.create("bundleRefreshAll", BundleActionTaskExtension)
             
             /** Installs (or updates) and optionally starts one or more bundles. */
-            task('bundleInstall', type: BundleInstallTask) << { 
-                uri = project.bundleInstall.uri
-                username = project.bundleInstall.username
-                password = project.bundleInstall.password
-                bundlestart = project.bundleInstall.bundlestart
-                bundlestartlevel = project.bundleInstall.bundlestartlevel
-                bundlefile = file("$buildDir/libs/$jar.archiveName")
-                userAgent = project.name
+            task('bundleInstall', type: BundleInstallTask) { 
+                uri = { bundleInstall.uri }
+                username = { bundleInstall.username }
+                password = { bundleInstall.password }
+                bundlestart = { bundleInstall.bundlestart }
+                bundlestartlevel = { bundleInstall.bundlestartlevel }
+                bundlefile = { file("$buildDir/libs/$jar.archiveName") }
+                userAgent = { project.name }
             }
             
             /** Starts the bundle addressed by the request URL. */
-            task('bundleStart', type: BundleActionTask) << { 
-                uri = bundleStart.uri
-                username = bundleStart.username
-                password = bundleStart.password
-                parameters = bundleStart.parameters
+            task('bundleStart', type: BundleActionTask) { 
+                uri = { bundleStart.uri }
+                username = { bundleStart.username }
+                password = { bundleStart.password }
+                parameters = { bundleStart.parameters }
                 action = 'start'
-                userAgent = project.name
+                userAgent = { project.name }
             }
             
             /** Stops the bundle addressed by the request URL. */
