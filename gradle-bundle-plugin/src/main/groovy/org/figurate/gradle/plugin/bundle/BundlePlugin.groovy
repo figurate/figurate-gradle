@@ -46,6 +46,7 @@ class BundlePlugin implements Plugin<Project> {
 
             // define bundle tasks..
             extensions.create("bundle", BundlePluginExtension)
+            /*
             extensions.create("bundleInstall", BundleInstallTaskExtension)
             extensions.create("bundleStart", BundleActionTaskExtension)
             extensions.create("bundleStop", BundleActionTaskExtension)
@@ -53,9 +54,10 @@ class BundlePlugin implements Plugin<Project> {
             extensions.create("bundleUpdate", BundleActionTaskExtension)
             extensions.create("bundleUninstall", BundleActionTaskExtension)
             extensions.create("bundleRefreshAll", BundleActionTaskExtension)
+            */
             
             /** Installs (or updates) and optionally starts one or more bundles. */
-            task('bundleInstall', type: BundleInstallTask) { 
+            task('bundleInstall', type: BundleInstallTask) /*{ 
                 conventionMapping.uri = { bundleInstall.uri }
                 conventionMapping.username = { bundleInstall.username }
                 conventionMapping.password = { bundleInstall.password }
@@ -66,7 +68,7 @@ class BundlePlugin implements Plugin<Project> {
             }
             
             /** Starts the bundle addressed by the request URL. */
-            task('bundleStart', type: BundleActionTask) { 
+            /*task('bundleStart', type: BundleActionTask) { 
                 conventionMapping.uri = { bundleStart.uri }
                 conventionMapping.username = { bundleStart.username }
                 conventionMapping.password = { bundleStart.password }
@@ -76,7 +78,7 @@ class BundlePlugin implements Plugin<Project> {
             }
             
             /** Stops the bundle addressed by the request URL. */
-            task('bundleStop', type: BundleActionTask) << { 
+            /*task('bundleStop', type: BundleActionTask) << { 
                 uri = bundleStop.uri
                 username = bundleStop.username
                 password = bundleStop.password
@@ -86,7 +88,7 @@ class BundlePlugin implements Plugin<Project> {
             }
             
             /** Calls PackageAdmin.refreshPackages(Bundle[]) with the bundle as its sole argument thus forcing the bundle to be rewired. */
-            task('bundleRefresh', type: BundleActionTask) << { 
+            /*task('bundleRefresh', type: BundleActionTask) << { 
                 uri = bundleRefresh.uri
                 username = bundleRefresh.username
                 password = bundleRefresh.password
@@ -96,7 +98,7 @@ class BundlePlugin implements Plugin<Project> {
             }
             
             /** Calls Bundle.update() on the bundle addressed by the request URL or tries to update the bundle through the OBR. */
-            task('bundleUpdate', type: BundleActionTask) << { 
+            /*task('bundleUpdate', type: BundleActionTask) << { 
                 uri = bundleUpdate.uri
                 username = bundleUpdate.username
                 password = bundleUpdate.password
@@ -106,7 +108,7 @@ class BundlePlugin implements Plugin<Project> {
             }
             
             /** Calls Bundle.uninstall() on the bundle addressed by the request URL. After the installation the framework must be refreshed (see refreshPackages above). */
-            task('bundleUninstall', type: BundleActionTask) << { 
+            /*task('bundleUninstall', type: BundleActionTask) << { 
                 uri = bundleUninstall.uri
                 username = bundleUninstall.username
                 password = bundleUninstall.password
@@ -116,14 +118,14 @@ class BundlePlugin implements Plugin<Project> {
             }
             
             /** Calls PackageAdmin.refreshPackages(Bundle[]) with a null argument thus refreshing all pending bundles. */
-            task('bundleRefreshAll', type: BundleActionTask) << { 
+            /*task('bundleRefreshAll', type: BundleActionTask) << { 
                 uri = bundleRefreshAll.uri
                 username = bundleRefreshAll.username
                 password = bundleRefreshAll.password
                 parameters = bundleRefreshAll.parameters
                 action = 'refreshPackages'
                 userAgent = project.name
-            }
+            }*/
 
             afterEvaluate {
                 jar {
