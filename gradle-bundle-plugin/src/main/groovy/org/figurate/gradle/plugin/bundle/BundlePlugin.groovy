@@ -56,13 +56,13 @@ class BundlePlugin implements Plugin<Project> {
             
             /** Installs (or updates) and optionally starts one or more bundles. */
             task('bundleInstall', type: BundleInstallTask) { 
-                uri = { bundleInstall.uri }
-                username = { bundleInstall.username }
-                password = { bundleInstall.password }
-                bundlestart = { bundleInstall.bundlestart }
-                bundlestartlevel = { bundleInstall.bundlestartlevel }
-                bundlefile = { file("$buildDir/libs/$jar.archiveName") }
-                userAgent = { project.name }
+                conventionMapping.uri = { bundleInstall.uri }
+                conventionMapping.username = { bundleInstall.username }
+                conventionMapping.password = { bundleInstall.password }
+                conventionMapping.bundlestart = { bundleInstall.bundlestart }
+                conventionMapping.bundlestartlevel = { bundleInstall.bundlestartlevel }
+                conventionMapping.bundlefile = { file("$buildDir/libs/$jar.archiveName") }
+                conventionMapping.userAgent = { project.name }
             }
             
             /** Starts the bundle addressed by the request URL. */
