@@ -45,51 +45,6 @@ class BundlePlugin implements Plugin<Project> {
             }
 
             // define bundle tasks..
-            
-            /** Installs (or updates) and optionally starts one or more bundles. */
-            task('bundleInstall', type: BundleInstallTask) { 
-                bundlestart = true
-                bundlestartlevel = 20
-                bundlefile = file("$buildDir/libs/$jar.archiveName")
-                userAgent = project.name
-            }
-            
-            /** Starts the bundle addressed by the request URL. */
-            task('bundleStart', type: BundleActionTask) { 
-                action = 'start'
-                userAgent = project.name
-            }
-            
-            /** Stops the bundle addressed by the request URL. */
-            task('bundleStop', type: BundleActionTask) { 
-                action = 'stop'
-                userAgent = project.name
-            }
-            
-            /** Calls PackageAdmin.refreshPackages(Bundle[]) with the bundle as its sole argument thus forcing the bundle to be rewired. */
-            task('bundleRefresh', type: BundleActionTask) { 
-                action = 'refresh'
-                userAgent = project.name
-            }
-            
-            /** Calls Bundle.update() on the bundle addressed by the request URL or tries to update the bundle through the OBR. */
-            task('bundleUpdate', type: BundleActionTask) { 
-                action = 'update'
-                userAgent = project.name
-            }
-            
-            /** Calls Bundle.uninstall() on the bundle addressed by the request URL. After the installation the framework must be refreshed (see refreshPackages above). */
-            task('bundleUninstall', type: BundleActionTask) { 
-                action = 'uninstall'
-                userAgent = project.name
-            }
-            
-            /** Calls PackageAdmin.refreshPackages(Bundle[]) with a null argument thus refreshing all pending bundles. */
-            task('bundleRefreshAll', type: BundleActionTask) { 
-                action = 'refreshPackages'
-                userAgent = project.name
-            }
-            
             extensions.create("bundle", BundlePluginExtension)
             extensions.create("bundleInstall", BundleInstallTaskExtension)
             extensions.create("bundleStart", BundleActionTaskExtension)
@@ -98,6 +53,77 @@ class BundlePlugin implements Plugin<Project> {
             extensions.create("bundleUpdate", BundleActionTaskExtension)
             extensions.create("bundleUninstall", BundleActionTaskExtension)
             extensions.create("bundleRefreshAll", BundleActionTaskExtension)
+            
+            /** Installs (or updates) and optionally starts one or more bundles. */
+            task('bundleInstall', type: BundleInstallTask) << { 
+                uri = bundleInstall.uri
+                username = bundleInstall.username
+                password = bundleInstall.password
+                bundlestart = bundleInstall.bundlestart
+                bundlestartlevel = bundleInstall.bundlestartlevel
+                bundlefile = bundleInstall.bundlefile
+                userAgent = project.name
+            }
+            
+            /** Starts the bundle addressed by the request URL. */
+            task('bundleStart', type: BundleActionTask) << { 
+                uri = extensions.bundleStart.uri
+                username = extensions.bundleStart.username
+                password = extensions.bundleStart.password
+                parameters = extensions.bundleStart.parameters
+                action = 'start'
+                userAgent = project.name
+            }
+            
+            /** Stops the bundle addressed by the request URL. */
+            task('bundleStop', type: BundleActionTask) << { 
+                uri = extensions.bundleStop.uri
+                username = extensions.bundleStop.username
+                password = extensions.bundleStop.password
+                parameters = extensions.bundleStop.parameters
+                action = 'stop'
+                userAgent = project.name
+            }
+            
+            /** Calls PackageAdmin.refreshPackages(Bundle[]) with the bundle as its sole argument thus forcing the bundle to be rewired. */
+            task('bundleRefresh', type: BundleActionTask) << { 
+                uri = extensions.bundleRefresh.uri
+                username = extensions.bundleRefresh.username
+                password = extensions.bundleRefresh.password
+                parameters = extensions.bundleRefresh.parameters
+                action = 'refresh'
+                userAgent = project.name
+            }
+            
+            /** Calls Bundle.update() on the bundle addressed by the request URL or tries to update the bundle through the OBR. */
+            task('bundleUpdate', type: BundleActionTask) << { 
+                uri = extensions.bundleUpdate.uri
+                username = extensions.bundleUpdate.username
+                password = extensions.bundleUpdate.password
+                parameters = extensions.bundleUpdate.parameters
+                action = 'update'
+                userAgent = project.name
+            }
+            
+            /** Calls Bundle.uninstall() on the bundle addressed by the request URL. After the installation the framework must be refreshed (see refreshPackages above). */
+            task('bundleUninstall', type: BundleActionTask) << { 
+                uri = extensions.bundleUninstall.uri
+                username = extensions.bundleUninstall.username
+                password = extensions.bundleUninstall.password
+                parameters = extensions.bundleUninstall.parameters
+                action = 'uninstall'
+                userAgent = project.name
+            }
+            
+            /** Calls PackageAdmin.refreshPackages(Bundle[]) with a null argument thus refreshing all pending bundles. */
+            task('bundleRefreshAll', type: BundleActionTask) << { 
+                uri = extensions.bundleRefreshAll.uri
+                username = extensions.bundleRefreshAll.username
+                password = extensions.bundleRefreshAll.password
+                parameters = extensions.bundleRefreshAll.parameters
+                action = 'refreshPackages'
+                userAgent = project.name
+            }
 
             afterEvaluate {
                 jar {
@@ -109,23 +135,6 @@ class BundlePlugin implements Plugin<Project> {
                         instruction 'Bundle-ClassPath', ".,${configurations.embed.dependencies.collect { "$bundle.embedPath/$it.name-${it.version}.jar" }.join(',')}"
                     }
                 }
-                
-                bundleInstall {
-                    uri = extensions.bundleInstall.uri
-                    username = extensions.bundleInstall.username
-                    password = extensions.bundleInstall.password
-                    bundlestart = extensions.bundleInstall.bundlestart
-                    bundlestartlevel = extensions.bundleInstall.bundlestartlevel
-                    bundlefile = extensions.bundleInstall.bundlefile
-                }
-                
-                bundleStart {
-                    uri = extensions.bundleStart.uri
-                    username = extensions.bundleStart.username
-                    password = extensions.bundleStart.password
-                    action = extensions.bundleStart.action
-                    userAgent = extensions.bundleStart.userAgent
-                }
             }
         }
     }
@@ -135,20 +144,18 @@ class BundlePlugin implements Plugin<Project> {
     }
 
     static class BundleActionTaskExtension {
-        String uri
+        Object uri
         String username
         String password
-        String action
-        String userAgent
         Map parameters
     }
 
     static class BundleInstallTaskExtension {
-        String uri
+        Object uri
         String username
         String password
-        File bundlefile
-        Boolean bundlestart
-        Integer bundlestartlevel
+        File bundlefile = file("$buildDir/libs/$jar.archiveName")
+        Boolean bundlestart = true
+        Integer bundlestartlevel = 20
     }
 }
