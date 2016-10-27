@@ -111,12 +111,18 @@ class BundlePlugin implements Plugin<Project> {
                 }
                 
                 bundleInstall {
+                    uri = extensions.bundleInstall.uri
+                    username = extensions.bundleInstall.username
+                    password = extensions.bundleInstall.password
                     bundlestart = extensions.bundleInstall.bundlestart
                     bundlestartlevel = extensions.bundleInstall.bundlestartlevel
                     bundlefile = extensions.bundleInstall.bundlefile
                 }
                 
                 bundleStart {
+                    uri = extensions.bundleStart.uri
+                    username = extensions.bundleStart.username
+                    password = extensions.bundleStart.password
                     action = extensions.bundleStart.action
                     userAgent = extensions.bundleStart.userAgent
                 }
@@ -129,12 +135,18 @@ class BundlePlugin implements Plugin<Project> {
     }
 
     static class BundleActionTaskExtension {
+        String uri
+        String username
+        String password
         String action
         String userAgent
         Map parameters
     }
 
     static class BundleInstallTaskExtension {
+        String uri
+        String username
+        String password
         File bundlefile
         Boolean bundlestart
         Integer bundlestartlevel
