@@ -91,6 +91,13 @@ class BundlePlugin implements Plugin<Project> {
             }
             
             extensions.create("bundle", BundlePluginExtension)
+            extensions.create("bundleInstall", BundleInstallTaskExtension)
+            extensions.create("bundleStart", BundleActionTaskExtension)
+            extensions.create("bundleStop", BundleActionTaskExtension)
+            extensions.create("bundleRefresh", BundleActionTaskExtension)
+            extensions.create("bundleUpdate", BundleActionTaskExtension)
+            extensions.create("bundleUninstall", BundleActionTaskExtension)
+            extensions.create("bundleRefreshAll", BundleActionTaskExtension)
 
             afterEvaluate {
                 jar {
@@ -102,11 +109,34 @@ class BundlePlugin implements Plugin<Project> {
                         instruction 'Bundle-ClassPath', ".,${configurations.embed.dependencies.collect { "$bundle.embedPath/$it.name-${it.version}.jar" }.join(',')}"
                     }
                 }
+                
+                bundleInstall {
+                    bundlestart = extensions.bundleInstall.bundlestart
+                    bundlestartlevel = extensions.bundleInstall.bundlestartlevel
+                    bundlefile = extensions.bundleInstall.bundlefile
+                }
+                
+                bundleStart {
+                    action = extensions.bundleStart.action
+                    userAgent = extensions.bundleStart.userAgent
+                }
             }
         }
     }
 
     static class BundlePluginExtension {
         String embedPath = 'lib'
+    }
+
+    static class BundleActionTaskExtension {
+        String action
+        String userAgent
+        Map parameters
+    }
+
+    static class BundleInstallTaskExtension {
+        File bundlefile
+        Boolean bundlestart
+        Integer bundlestartlevel
     }
 }
