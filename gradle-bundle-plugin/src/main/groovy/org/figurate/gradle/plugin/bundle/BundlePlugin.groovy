@@ -67,12 +67,12 @@ class BundlePlugin implements Plugin<Project> {
             
             /** Starts the bundle addressed by the request URL. */
             task('bundleStart', type: BundleActionTask) { 
-                uri = { bundleStart.uri }
-                username = { bundleStart.username }
-                password = { bundleStart.password }
-                parameters = { bundleStart.parameters }
+                conventionMapping.uri = { bundleStart.uri }
+                conventionMapping.username = { bundleStart.username }
+                conventionMapping.password = { bundleStart.password }
+                conventionMapping.parameters = { bundleStart.parameters }
                 action = 'start'
-                userAgent = { project.name }
+                conventionMapping.userAgent = { project.name }
             }
             
             /** Stops the bundle addressed by the request URL. */
