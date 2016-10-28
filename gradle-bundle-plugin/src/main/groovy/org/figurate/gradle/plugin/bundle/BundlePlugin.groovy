@@ -46,37 +46,14 @@ class BundlePlugin implements Plugin<Project> {
 
             // define bundle tasks..
             extensions.create("bundle", BundlePluginExtension)
-            /*
-            extensions.create("bundleInstall", BundleInstallTaskExtension)
-            extensions.create("bundleStart", BundleActionTaskExtension)
-            extensions.create("bundleStop", BundleActionTaskExtension)
-            extensions.create("bundleRefresh", BundleActionTaskExtension)
-            extensions.create("bundleUpdate", BundleActionTaskExtension)
-            extensions.create("bundleUninstall", BundleActionTaskExtension)
-            extensions.create("bundleRefreshAll", BundleActionTaskExtension)
-            */
-            
+
             /** Installs (or updates) and optionally starts one or more bundles. */
-            task('bundleInstall', type: BundleInstallTask) /*{ 
-                conventionMapping.uri = { bundleInstall.uri }
-                conventionMapping.username = { bundleInstall.username }
-                conventionMapping.password = { bundleInstall.password }
-                conventionMapping.bundlestart = { bundleInstall.bundlestart }
-                conventionMapping.bundlestartlevel = { bundleInstall.bundlestartlevel }
-                conventionMapping.bundlefile = { file("$buildDir/libs/$jar.archiveName") }
-                conventionMapping.userAgent = { project.name }
-            }
+            task('bundleInstall', type: BundleInstallTask)
             
             /** Starts the bundle addressed by the request URL. */
-            /*task('bundleStart', type: BundleActionTask) { 
-                conventionMapping.uri = { bundleStart.uri }
-                conventionMapping.username = { bundleStart.username }
-                conventionMapping.password = { bundleStart.password }
-                conventionMapping.parameters = { bundleStart.parameters }
-                action = 'start'
-                conventionMapping.userAgent = { project.name }
-            }
-            
+            BundleActionTask bundleStartTask = task('bundleStart', type: BundleActionTask)
+            bundleStartTask.action = 'start'
+
             /** Stops the bundle addressed by the request URL. */
             /*task('bundleStop', type: BundleActionTask) << { 
                 uri = bundleStop.uri
@@ -139,12 +116,13 @@ class BundlePlugin implements Plugin<Project> {
                 }
                 
                 bundleInstall {
-                    if (!bundlefile) {
-                        bundlefile = file("$buildDir/libs/$jar.archiveName")
-                    }
-                    if (!userAgent) {
-                        userAgent = project.name
-                    }
+                    bundlefile = bundlefile ?: file("$buildDir/libs/$jar.archiveName")
+                    bundlestart = bundlestart ?: true
+                    bundlestartlevel = bundlestartlevel ?: 20
+                }
+                
+                [bundleInstall, bundleStart].each {
+                    userAgent = userAgent ?: project.name
                 }
             }
         }
