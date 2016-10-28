@@ -121,8 +121,8 @@ class BundlePlugin implements Plugin<Project> {
                     bundlestartlevel = bundlestartlevel ?: 20
                 }
                 
-                [bundleInstall, bundleStart].each {
-                    userAgent = userAgent ?: project.name
+                [bundleInstall, bundleStart].each { task ->
+                    task.userAgent = task.userAgent ?: project.name
                 }
             }
         }
