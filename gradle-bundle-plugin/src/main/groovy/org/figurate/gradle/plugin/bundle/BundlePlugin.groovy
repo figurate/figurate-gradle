@@ -55,54 +55,24 @@ class BundlePlugin implements Plugin<Project> {
             bundleStartTask.action = 'start'
 
             /** Stops the bundle addressed by the request URL. */
-            /*task('bundleStop', type: BundleActionTask) << { 
-                uri = bundleStop.uri
-                username = bundleStop.username
-                password = bundleStop.password
-                parameters = bundleStop.parameters
-                action = 'stop'
-                userAgent = project.name
-            }
+            BundleActionTask bundleStopTask = task('bundleStop', type: BundleActionTask)
+            bundleStopTask.action = 'stop'
             
             /** Calls PackageAdmin.refreshPackages(Bundle[]) with the bundle as its sole argument thus forcing the bundle to be rewired. */
-            /*task('bundleRefresh', type: BundleActionTask) << { 
-                uri = bundleRefresh.uri
-                username = bundleRefresh.username
-                password = bundleRefresh.password
-                parameters = bundleRefresh.parameters
-                action = 'refresh'
-                userAgent = project.name
-            }
+            BundleActionTask bundleRefreshTask = task('bundleRefresh', type: BundleActionTask)
+            bundleRefreshTask.action = 'refresh'
             
             /** Calls Bundle.update() on the bundle addressed by the request URL or tries to update the bundle through the OBR. */
-            /*task('bundleUpdate', type: BundleActionTask) << { 
-                uri = bundleUpdate.uri
-                username = bundleUpdate.username
-                password = bundleUpdate.password
-                parameters = bundleUpdate.parameters
-                action = 'update'
-                userAgent = project.name
-            }
+            BundleActionTask bundleUpdateTask = task('bundleUpdate', type: BundleActionTask)
+            bundleUpdateTask.action = 'update'
             
             /** Calls Bundle.uninstall() on the bundle addressed by the request URL. After the installation the framework must be refreshed (see refreshPackages above). */
-            /*task('bundleUninstall', type: BundleActionTask) << { 
-                uri = bundleUninstall.uri
-                username = bundleUninstall.username
-                password = bundleUninstall.password
-                parameters = bundleUninstall.parameters
-                action = 'uninstall'
-                userAgent = project.name
-            }
+            BundleActionTask bundleUninstallTask = task('bundleUninstall', type: BundleActionTask)
+            bundleUninstallTask.action = 'uninstall'
             
             /** Calls PackageAdmin.refreshPackages(Bundle[]) with a null argument thus refreshing all pending bundles. */
-            /*task('bundleRefreshAll', type: BundleActionTask) << { 
-                uri = bundleRefreshAll.uri
-                username = bundleRefreshAll.username
-                password = bundleRefreshAll.password
-                parameters = bundleRefreshAll.parameters
-                action = 'refreshPackages'
-                userAgent = project.name
-            }*/
+            BundleActionTask bundleRefreshAllTask = task('bundleRefreshAll', type: BundleActionTask)
+            bundleRefreshAllTask.action = 'refreshPackages'
 
             afterEvaluate {
                 jar {
@@ -121,7 +91,7 @@ class BundlePlugin implements Plugin<Project> {
                     bundlestartlevel = bundlestartlevel ?: 20
                 }
                 
-                [bundleInstall, bundleStart].each { task ->
+                [bundleInstall, bundleStart, bundleStop, bundleRefresh, bundleUpdate, bundleUninstall, bundleRefreshAll].each { task ->
                     task.userAgent = task.userAgent ?: project.name
                 }
             }
@@ -130,20 +100,5 @@ class BundlePlugin implements Plugin<Project> {
 
     static class BundlePluginExtension {
         String embedPath = 'lib'
-    }
-
-    static class BundleActionTaskExtension {
-        Object uri
-        String username
-        String password
-        Map parameters
-    }
-
-    static class BundleInstallTaskExtension {
-        Object uri
-        String username
-        String password
-        Boolean bundlestart = true
-        Integer bundlestartlevel = 20
     }
 }
