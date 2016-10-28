@@ -137,6 +137,15 @@ class BundlePlugin implements Plugin<Project> {
                         instruction 'Bundle-ClassPath', ".,${configurations.embed.dependencies.collect { "$bundle.embedPath/$it.name-${it.version}.jar" }.join(',')}"
                     }
                 }
+                
+                bundleInstall {
+                    if (!bundlefile) {
+                        bundlefile = file("$buildDir/libs/$jar.archiveName")
+                    }
+                    if (!userAgent) {
+                        userAgent = project.name
+                    }
+                }
             }
         }
     }
