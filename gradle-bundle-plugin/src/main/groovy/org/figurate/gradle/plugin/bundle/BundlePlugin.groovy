@@ -44,7 +44,35 @@ class BundlePlugin implements Plugin<Project> {
                 includeEmptyDirs = false
             }
 
+            // define bundle tasks..
             extensions.create("bundle", BundlePluginExtension)
+
+            /** Installs (or updates) and optionally starts one or more bundles. */
+            task('bundleInstall', type: BundleInstallTask)
+            
+            /** Starts the bundle addressed by the request URL. */
+            BundleActionTask bundleStartTask = task('bundleStart', type: BundleActionTask)
+            bundleStartTask.action = 'start'
+
+            /** Stops the bundle addressed by the request URL. */
+            BundleActionTask bundleStopTask = task('bundleStop', type: BundleActionTask)
+            bundleStopTask.action = 'stop'
+            
+            /** Calls PackageAdmin.refreshPackages(Bundle[]) with the bundle as its sole argument thus forcing the bundle to be rewired. */
+            BundleActionTask bundleRefreshTask = task('bundleRefresh', type: BundleActionTask)
+            bundleRefreshTask.action = 'refresh'
+            
+            /** Calls Bundle.update() on the bundle addressed by the request URL or tries to update the bundle through the OBR. */
+            BundleActionTask bundleUpdateTask = task('bundleUpdate', type: BundleActionTask)
+            bundleUpdateTask.action = 'update'
+            
+            /** Calls Bundle.uninstall() on the bundle addressed by the request URL. After the installation the framework must be refreshed (see refreshPackages above). */
+            BundleActionTask bundleUninstallTask = task('bundleUninstall', type: BundleActionTask)
+            bundleUninstallTask.action = 'uninstall'
+            
+            /** Calls PackageAdmin.refreshPackages(Bundle[]) with a null argument thus refreshing all pending bundles. */
+            BundleActionTask bundleRefreshAllTask = task('bundleRefreshAll', type: BundleActionTask)
+            bundleRefreshAllTask.action = 'refreshPackages'
 
             afterEvaluate {
                 jar {
@@ -55,6 +83,16 @@ class BundlePlugin implements Plugin<Project> {
                     manifest {
                         instruction 'Bundle-ClassPath', ".,${configurations.embed.dependencies.collect { "$bundle.embedPath/$it.name-${it.version}.jar" }.join(',')}"
                     }
+                }
+                
+                bundleInstall {
+                    bundlefile = bundlefile ?: file("$buildDir/libs/$jar.archiveName")
+                    bundlestart = bundlestart ?: true
+                    bundlestartlevel = bundlestartlevel ?: 20
+                }
+                
+                [bundleInstall, bundleStart, bundleStop, bundleRefresh, bundleUpdate, bundleUninstall, bundleRefreshAll].each { task ->
+                    task.userAgent = task.userAgent ?: project.name
                 }
             }
         }
