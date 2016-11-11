@@ -14,7 +14,7 @@ descriptors from [Java annotations]. This plugin adds such support via the gensc
 By default the jar task depends on genscr so it will be performed automatically
 as part of artefact generation.
 
-# Embedded Dependencies
+## Embedded Dependencies
 
 Ocassionally you may want to include libraries in your OSGi bundle, often due to
 dependencies that don't include the required manifest headers to be OSGi compliant.
@@ -37,7 +37,7 @@ when packaging your bundle artefact.
 
 Note that the default embedPath is **lib** but can be overridden as shown.
 
-# Deploying Bundles
+## Deploying Bundles
 
 This plugin also supports bundle deployment via the [Felix Web Console API]. At a
 minimum you must provide configuration for the target URI.
