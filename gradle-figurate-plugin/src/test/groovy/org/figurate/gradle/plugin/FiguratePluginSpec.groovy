@@ -100,7 +100,7 @@ class FiguratePluginSpec extends Specification {
         project.tasks.copyBundles.execute()
         project.tasks.launcherConfig.execute()
         project.tasks.startScripts.execute()
-        project.tasks.installApp.execute()
+        project.tasks.installDist.execute()
 
         then:
         new File(project.buildDir, "install/${project.name}").exists()
