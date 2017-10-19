@@ -139,7 +139,7 @@ subprojects { subproject ->
                 artifact javadocJar
                 artifact sourcesJar
                 pom.withXml {
-                    asNode().appendNode('name', subproject.name)
+                    asNode().appendNode('name', subproject.pomName)
                     asNode().appendNode('description', subproject.description)
                     asNode().appendNode('url', 'http://figurate.org')
 
