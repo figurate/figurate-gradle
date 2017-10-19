@@ -8,16 +8,17 @@ scmVersion {
         prefix = 'figurate-gradle'
     }
     versionCreator 'versionWithBranch'
-    nextVersion {
-        suffix = 'alpha'
-        separator = '-'
-    }
+    branchVersionCreator = [
+        'master': 'simple'
+    ]
 }
 
-subprojects {
+subprojects { subproject ->
 
     apply plugin: 'groovy'
+    apply plugin: 'com.jfrog.bintray'
     apply plugin: 'maven'
+    apply plugin: 'maven-publish'
     apply plugin: 'signing'
     apply plugin: 'codenarc'
     apply plugin: 'jacoco'
@@ -35,10 +36,19 @@ subprojects {
         testCompile 'cglib:cglib-nodep:3.1'
     }
 
+    group = 'org.figurate'
+    version = rootProject.scmVersion.version
+
     jacocoTestReport {
         reports {
             xml.enabled true
             html.enabled false
+        }
+    }
+
+    javadoc {
+        if (JavaVersion.current().isJava8Compatible()) {
+            options.addStringOption('Xdoclint:none', '-quiet')
         }
     }
 
@@ -67,62 +77,117 @@ subprojects {
         configFile = rootProject.file('config/codenarc/codenarc.xml')
         reportFormat = 'xml'
     }
-    
-    ext.pomName = ''
 
-    afterEvaluate {
-        uploadArchives {
-            repositories {
-                mavenDeployer {
-                    beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+    ext {
+        isReleaseVersion = !version.endsWith("SNAPSHOT")
 
-                    repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                        authentication(userName: sonatypeUsername, password: sonatypePassword)
+        // sonatype credentials
+        sonatype_username = project.hasProperty('sonatype_username') ? project.getProperty('sonatype_username') : ''
+        sonatype_password = project.hasProperty('sonatype_password') ? project.getProperty('sonatype_password') : ''
+
+        // bintray credentials
+        bintray_user = project.hasProperty('bintray_user') ? project.getProperty('bintray_user') : ''
+        bintray_key = project.hasProperty('bintray_key') ? project.getProperty('bintray_key') : ''
+    }
+
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                    authentication(userName: sonatype_username, password: sonatype_password)
+                }
+                snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots") {
+                    authentication(userName: sonatype_username, password: sonatype_password)
+                }
+
+                pom.project {
+                    name subproject.name
+                    packaging 'jar'
+                    description subproject.description
+                    url 'http://figurate.org'
+
+                    scm {
+                        url 'https://github.com/figurate/figurate-gradle'
+                        connection 'scm:git@github.com:figurate/figurate-gradle.git'
+                        developerConnection 'scm:git@github.com:figurate/figurate-gradle.git'
                     }
-                    snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots") {
-                        authentication(userName: sonatypeUsername, password: sonatypePassword)
+
+                    licenses {
+                        license {
+                            name 'The Apache Software License, Version 2.0'
+                            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                            distribution 'repo'
+                        }
                     }
 
-                    pom.project {
-                        name pomName
-                        packaging 'jar'
-                        description project.description
-                        url 'http://figurate.org/'
-
-                        scm {
-                            url 'https://github.com/figurate/figurate-gradle'
-                            connection 'scm:git@github.com:figurate/figurate-gradle.git'
-                            developerConnection 'scm:git@github.com:figurate/figurate-gradle.git'
-                        }
-
-                        licenses {
-                            license {
-                                name 'The Apache Software License, Version 2.0'
-                                url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                                distribution 'repo'
-                            }
-                        }
-
-                        developers {
-                            developer {
-                                id 'fortuna'
-                                name 'Ben Fortuna'
-                            }
+                    developers {
+                        developer {
+                            id 'fortuna'
+                            name 'Ben Fortuna'
                         }
                     }
                 }
             }
         }
     }
+    publishing {
+        publications {
+            mavenArtifacts(MavenPublication) {
+                from components.java
+                artifact javadocJar
+                artifact sourcesJar
+                pom.withXml {
+                    asNode().appendNode('name', subproject.name)
+                    asNode().appendNode('description', subproject.description)
+                    asNode().appendNode('url', 'http://figurate.org')
 
-    group = 'org.figurate'
-    version = rootProject.scmVersion.version
+                    def scmNode = asNode().appendNode('scm')
+                    scmNode.appendNode('url', 'https://github.com/figurate/figurate-gradle')
+                    scmNode.appendNode('connection', 'scm:git@github.com:figurate/figurate-gradle.git')
+                    scmNode.appendNode('developerConnection', 'scm:git@github.com:figurate/figurate-gradle.git')
 
-    ext {
-        isReleaseVersion = !version.endsWith("SNAPSHOT")
+                    def licenseNode = asNode().appendNode('licenses').appendNode('license')
+                    licenseNode.appendNode('name', 'Whistlepost - License')
+                    licenseNode.appendNode('url', 'https://raw.githubusercontent.com/figurate/figurate-gradle/master/LICENSE')
+                    licenseNode.appendNode('distribution', 'repo')
 
-        // sonatype credentials
-        sonatypeUsername = project.hasProperty('sonatypeUsername') ? project.getProperty('sonatypeUsername') : ''
-        sonatypePassword = project.hasProperty('sonatypePassword') ? project.getProperty('sonatypePassword') : ''
+                    def developerNode = asNode().appendNode('developers').appendNode('developer')
+                    developerNode.appendNode('id', 'fortuna')
+                    developerNode.appendNode('name', 'Ben Fortuna')
+                }
+            }
+        }
+    }
+
+    bintray {
+        user = bintray_user
+        key = bintray_key
+        pkg {
+            repo = 'figurate'
+            name = subproject.name
+            userOrg = 'figurate'
+            licenses = ['BSD']
+            vcsUrl = 'https://github.com/figurate/figurate-gradle.git'
+            version {
+                name = scmVersion.version
+                desc = "Figurate gradle $scmVersion.version"
+                released  = new Date()
+                vcsTag = "figurate-gradle-$scmVersion.version"
+                gpg {
+                    sign = isReleaseVersion
+                }
+                mavenCentralSync {
+                    sync = isReleaseVersion
+                    user = sonatype_username //OSS user token: mandatory
+                    password = sonatype_password //OSS user password: mandatory
+                    close = '0' //Optional property. By default the staging repository is closed and artifacts are released to Maven Central. You can optionally turn this behaviour off (by puting 0 as value) and release the version manually.
+                }
+            }
+        }
+//    configurations = ['archives']
+        publications = ['mavenArtifacts']
     }
 }
+
