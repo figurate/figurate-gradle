@@ -165,14 +165,14 @@ subprojects { subproject ->
         user = bintray_user
         key = bintray_key
         pkg {
-            repo = 'figurate'
+            repo = 'maven'
             name = subproject.name
             userOrg = 'figurate'
             licenses = ['BSD']
             vcsUrl = 'https://github.com/figurate/figurate-gradle.git'
             version {
                 name = scmVersion.version
-                desc = "Figurate gradle $scmVersion.version"
+                desc = "Figurate Gradle $scmVersion.version"
                 released  = new Date()
                 vcsTag = "figurate-gradle-$scmVersion.version"
                 gpg {
