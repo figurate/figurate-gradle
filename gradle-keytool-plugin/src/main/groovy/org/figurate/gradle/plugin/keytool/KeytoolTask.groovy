@@ -19,7 +19,7 @@ class KeytoolTask extends Exec {
         ks.load(new FileInputStream(keystoreName), keystorePassword.toCharArray());
         StringBuilder builder = new StringBuilder()
         builder << "-----BEGIN PRIVATE KEY-----\n"
-        builder << new sun.misc.BASE64Encoder().encode(ks.getKey(alias, keystorePassword.toCharArray()).getEncoded())
+        builder << Base64.getEncoder().encode(ks.getKey(alias, keystorePassword.toCharArray()).getEncoded())
         builder << "-----END PRIVATE KEY-----\n"
         builder.toString()
     }
