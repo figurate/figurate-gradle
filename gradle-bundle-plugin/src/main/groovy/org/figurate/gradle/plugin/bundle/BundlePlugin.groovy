@@ -21,8 +21,8 @@ class BundlePlugin implements Plugin<Project> {
             }
 
             dependencies {
-                compile 'org.apache.felix:org.apache.felix.scr.ant:1.9.0',
-                        'biz.aQute.bnd:biz.aQute.bndlib:3.1.0'
+                compile 'org.apache.felix:org.apache.felix.scr.ant:1.18.0',
+                        'biz.aQute.bnd:biz.aQute.bndlib:4.0.0'
             }
 
             ant.properties.src = "$project.buildDir/classes/main"
