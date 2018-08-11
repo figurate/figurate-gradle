@@ -29,7 +29,7 @@ subprojects { subproject ->
 
     dependencies {
         compile gradleApi()
-        compile 'org.codehaus.groovy:groovy-all:2.4.11'
+        compile 'org.codehaus.groovy:groovy-all:2.4.12'
 
         testCompile 'org.spockframework:spock-core:1.1-groovy-2.4'
         // required for mocking non-interface classes in spock..
