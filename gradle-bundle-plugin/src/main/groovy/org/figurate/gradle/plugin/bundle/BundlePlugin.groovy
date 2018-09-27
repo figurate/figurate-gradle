@@ -25,17 +25,18 @@ class BundlePlugin implements Plugin<Project> {
                         'biz.aQute.bnd:biz.aQute.bndlib:4.0.0'
             }
 
-            ant.properties.src = "$project.buildDir/classes/main"
-            ant.properties.classes = "$project.buildDir/classes/main"
-
             task('genscr', dependsOn: [compileJava, compileGroovy]) {
-                // genscr requires the src dir to exist, using output to create as needed..
-                outputs.dir ant.properties.classes
-
                 doLast {
-                    ant.taskdef(resource: 'scrtask.properties', classpath: sourceSets.main.compileClasspath.asPath)
-                    ant.scr(srcdir: ant.properties.src, destdir: ant.properties.classes, scanClasses: true,
-                        classpath: sourceSets.main.compileClasspath.asPath)
+                    sourceSets.main.output.classesDirs.each {
+                        ant.properties.src = it
+                        ant.properties.classes = it
+
+                        if ((ant.properties.src as File).exists()) {
+                            ant.taskdef(resource: 'scrtask.properties', classpath: sourceSets.main.compileClasspath.asPath)
+                            ant.scr(srcdir: ant.properties.src, destdir: ant.properties.classes, scanClasses: true,
+                                    classpath: sourceSets.main.compileClasspath.asPath)
+                        }
+                    }
                 }
             }
             
