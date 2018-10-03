@@ -3,3 +3,4 @@ build/
 .gradle/
 .idea/
 atlassian-ide-plugin.xml
+gradle.properties

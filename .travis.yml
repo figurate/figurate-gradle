@@ -10,7 +10,9 @@ dist: trusty
 language: groovy
 jdk:
   - oraclejdk8
+  - oraclejdk9
   - openjdk8
+#  - openjdk10
 script:
   - ./gradlew build jacocoTestReport
 after_success:
